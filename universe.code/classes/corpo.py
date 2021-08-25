@@ -10,27 +10,23 @@ class Corpo:
         self._raio = raio
         self._mundo = mundo
         self._cor = cor
-        self._tamanho = raio/mundo.km_pixel
-        self._lugar_km = lugar
-
+        self._tamanho = raio
+        self.lugar = lugar
+        self.raio = raio
         self._velocidade = [0,0]
         self._aceleracao = [0,0]
         self._lista_rastros = []
-        self._lugar_pixel = [self._lugar_km[0] / self._mundo.km_pixel, self._lugar_km[1] / self._mundo.km_pixel]
+        self._lugar_pixel = [self.lugar[0] / self._mundo.km_pixel, self.lugar[1] / self._mundo.km_pixel]
         mundo.addCorpo(self)
         #self.img_circulo_gravidade = image.load('circulotransparente.png').convert_alpha()
 
     def update(self, dt):
-        self._tamanho = self._raio / self._mundo.km_pixel
-
         self._velocidade[0] += self._aceleracao[0] *dt
         self._velocidade[1] += self._aceleracao[1] *dt
-        lugarxa = self._lugar_km[0]
-        lugarya = self._lugar_km[1]
-        self._lugar_km[0] += self._velocidade[0] *dt
-        self._lugar_km[1] += self._velocidade[1] *dt
-
-        self._lugar_pixel = [self._lugar_km[0] / self._mundo.km_pixel, self._lugar_km[1] / self._mundo.km_pixel]
+        lugarxa = self.lugar[0]
+        lugarya = self.lugar[1]
+        self.lugar[0] += self._velocidade[0] * dt
+        self.lugar[1] += self._velocidade[1] * dt
 
         if self._mundo.showRastro:
 
@@ -40,22 +36,17 @@ class Corpo:
             for rastro in self._lista_rastros:
                 draw.line(rastro[0], rastro[1], rastro[2], rastro[3], rastro[4])
 
-        if self._mundo.showGravity:
-
+        '''if self._mundo.showGravity:
             self.area_gravidade = int(self._raio * 10 / self._mundo.km_pixel)
-            self.circulo_gravidade = transform.scale(self.img_circulo_gravidade, [self.area_gravidade, self.area_gravidade])
+            #self.circulo_gravidade = transform.scale(self.img_circulo_gravidade, [self.area_gravidade, self.area_gravidade])
             #self._mundo.getDisplay()[0].blit(self.circulo_gravidade, (self._lugar_pixel[0]-(self.area_gravidade/2), self._lugar_pixel[1]-(self.area_gravidade/2)))
-
+            '''
         #self._sprite = draw.circle(self._mundo.getDisplay()[0], self._cor, self._lugar_pixel, self._tamanho)
 
     def getAceleracao(self): return self._aceleracao
     def getVelocidade(self): return self._velocidade
     def getMassa(self): return self._massa
-    def getLugar(self, qual):
-        if qual == 'km':
-            return self._lugar_km
-        elif qual == 'pixel':
-            return self._lugar_pixel
+    def getLugar(self): return self.lugar
     def getRaio(self): return self._raio
     def getTamanho(self): return self._tamanho
     def getCor(self): return self._cor
