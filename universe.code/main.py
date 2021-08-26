@@ -8,55 +8,60 @@ from utils import *
 
 #Configurações----
 tamanhoTela = [600,600]
-FPS=60
-TD = 0.1
-segundos_de_simulacao = 120
-corFundo = (0, 0, 20)
+FPS_rate=10000
+segundos_de_simulacao = 180
+
+corUniverso = (3, 6, 13)
 corPrimaria = (13, 16, 23)
 corSecundaria = (22, 27, 34)
 corTextoPrimaria = (88, 166, 255)
 corTextoSecundaria = (53, 114, 165)
 corBranco = (255, 255, 255)
+
 font = 'ARIAL'
 tamanhoTexto = 0.1
 #-----------------
 #Variáveis--------
-botoes = []
-botaoSair = []
-zoom = 600000
-centroTela = [int(zoom/2), int(zoom/2)]
+zoom = 1000000 #Zoom inicial
+centroTela = [int(zoom/2), int(zoom/2)] #Local de início
 changeCenter = None
 changeZoom = None
-fpss = 0
-fps_rate = 0
+fps = 0
+FPS = None
+#-----------------
+#Funções----------
+def criaBotoes():
+    botoes = []
+    botoes.append(Botao(codigo='btMaisZoom', lugar=[int(tamanhoTela[0]*0.9), int(tamanhoTela[1]*0.72)], cor=corUniverso, tamanho=[60, 35]))
+    botoes.append(Botao(codigo='btMenosZoom', lugar=[int(tamanhoTela[0]*0.9), int(tamanhoTela[1]*0.823)], cor=corUniverso, tamanho=[60, 35]))
+    botoes.append(Botao(lugar=[int(tamanhoTela[0]*0.925), int(tamanhoTela[1]*0.025)], texto='x',tamanho=[int(tamanhoTela[0]*0.05), int(tamanhoTela[0]*0.05)],cor=corSecundaria, corTexto=(255,0,0), tamanhoTexto=tamanhoTexto, codigo=0))
+    botoes.append(Botao(codigo='btChangecenterCima', lugar=[int(tamanhoTela[0]*0.15), 0], cor=corUniverso, tamanho=[int(tamanhoTela[0]*0.7), int(tamanhoTela[1]*0.15)]))
+    botoes.append(Botao(codigo='btChangecenterBaixo', lugar=[int(tamanhoTela[0]*0.15), tamanhoTela[1]*0.85], cor=corUniverso, tamanho=[int(tamanhoTela[0]*0.7), int(tamanhoTela[1]*0.15)]))
+    botoes.append(Botao(codigo='btChangecenterLeft', lugar=[0, int(tamanhoTela[1]*0.15)], cor=corUniverso, tamanho=[int(tamanhoTela[0]*0.2), int(tamanhoTela[1]*0.7)]))
+    botoes.append(Botao(codigo='btChangecenterRight', lugar=[int(tamanhoTela[0]*0.8), int(tamanhoTela[1]*0.15)], cor=corUniverso, tamanho=[int(tamanhoTela[0]*0.2), int(tamanhoTela[1]*0.7)]))
+    
+    return botoes
+
+def criaCorpos():
+    corpos = []
+    lua = Corpo((7.34 * (10**19)), raio=1737, lugar=[784400, 400000], cor=(255, 255, 150))
+    lua.putForca([530**9,300**9], 1)
+    terra = Corpo((5.972 * (10**24)), raio=6371, lugar=[zoom/2, zoom/2], cor=(0, 0, 255))
+    terra._velocidade = [1000, 2000]
+
+    corpos.append(lua)
+    corpos.append(terra)
+    return corpos
+
 #-----------------
 #Definições-------
 pygame.init()
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(tamanhoTela)
 pygame.display.set_caption('Universe.Code')
-lugarBotao = int(tamanhoTela[0]*0.925), int(tamanhoTela[1]*0.025)
-tamanhoBotao = [int(tamanhoTela[0]*0.05), int(tamanhoTela[0]*0.05)]
 mouse = Mouse()
-botaoSair = Botao(lugar=lugarBotao, texto='x',tamanho=tamanhoBotao,cor=corSecundaria, corTexto=(255,0,0), tamanhoTexto=tamanhoTexto, codigo=0)
-btChangecenterCima = Botao(codigo='btChangecenterCima', lugar=[int(tamanhoTela[0]*0.15), 0], cor=corFundo, tamanho=[int(tamanhoTela[0]*0.7), int(tamanhoTela[1]*0.15)])
-btChangecenterBaixo = Botao(codigo='btChangecenterBaixo', lugar=[int(tamanhoTela[0]*0.15), tamanhoTela[1]*0.85], cor=corFundo, tamanho=[int(tamanhoTela[0]*0.7), int(tamanhoTela[1]*0.15)])
-btChangecenterLeft = Botao(codigo='btChangecenterLeft', lugar=[0, int(tamanhoTela[1]*0.15)], cor=corFundo, tamanho=[int(tamanhoTela[0]*0.2), int(tamanhoTela[1]*0.7)])
-btChangecenterRight = Botao(codigo='btChangecenterRight', lugar=[int(tamanhoTela[0]*0.8), int(tamanhoTela[1]*0.15)], cor=corFundo, tamanho=[int(tamanhoTela[0]*0.2), int(tamanhoTela[1]*0.7)])
-btMaisZoom = Botao(codigo='btMaisZoom', lugar=[int(tamanhoTela[0]*0.9), int(tamanhoTela[1]*0.72)], cor=corFundo, tamanho=[60, 35])
-btMenosZoom = Botao(codigo='btMenosZoom', lugar=[int(tamanhoTela[0]*0.9), int(tamanhoTela[1]*0.823)], cor=corFundo, tamanho=[60, 35])
-botoes.append(botaoSair)
-botoes.append(btMaisZoom)
-botoes.append(btMenosZoom)
-botoes.append(btChangecenterCima)
-botoes.append(btChangecenterBaixo)
-botoes.append(btChangecenterLeft)
-botoes.append(btChangecenterRight)
-universo1 = Universo(tamanhoTela, visualizar=zoom)
-lua = Corpo((7.34 * (10**19)), raio=1737, mundo=universo1, lugar=[200000, 100000], cor=(255, 255, 150))
-lua.putForca([490**9,300**9], 1)
-terra = Corpo((5.972 * (10**24)), raio=6371, mundo=universo1, lugar=[300000, 300000], cor=(0, 0, 255))
-terra._velocidade = [-0, 2000]
+botoes = criaBotoes()
+universo = Universo(corpos=criaCorpos())
 #-----------------
 #Times------------
 tempo_inicio = time()
@@ -66,7 +71,7 @@ timeContoufps = time()
 running = True
 while running:
     # Escreve fundo
-    screen.fill(corFundo)
+    screen.fill(corUniverso)
 
     # Executa comandos do usuário
     for event in pygame.event.get():
@@ -110,32 +115,34 @@ while running:
         centroTela[0] -= zoom/100
     elif changeCenter == 'btChangecenterRight':
         centroTela[0] += zoom/100
-
+    
     if changeZoom == 'btMaisZoom':
-        zoom -= zoom*0.05
+        zoom -= zoom*0.025
     elif changeZoom == 'btMenosZoom':
-        zoom += zoom*0.05
+        zoom += zoom*0.025
 
-    universo1.update(1 / FPS)
+    if FPS:
+        universo.update(1 / FPS)
 
+    # Escreve botões
     for botao in botoes:
         pygame.draw.rect(screen, botao.cor, (botao.lugar[0],botao.lugar[1],botao.tamanho[0],botao.tamanho[1]))
         myfont = pygame.font.SysFont(font, int((tamanhoTela[0] / 2) * tamanhoTexto))
         textsurface = myfont.render(botao.texto, True, botao.corTexto)
         screen.blit(textsurface, (int((botao.lugar[0])+botao.tamanho[0]*0.3), int((botao.lugar[1])-botao.tamanho[1]*0.2)))
 
-    for corpo in universo1._lista_corpos:
+    # Escreve corpos
+    for corpo in universo.corpos:
         tamanhoCorpoPixel = distanciaKmToPixel(corpo.getTamanho(), tamanhoTela[0], zoom)
         lugarCorpoPixel = getLugatPixel([corpo.getLugar()[0]-centroTela[0], corpo.getLugar()[1]-centroTela[1]], tamanhoTela, zoom)
         #if tamanhoCorpoPixel < 1: tamanhoCorpoPixel=1
         pygame.draw.circle(screen, corpo.getCor(), getLugatPixel([corpo.getLugar()[0]-centroTela[0], corpo.getLugar()[1]-centroTela[1]], tamanhoTela, zoom), tamanhoCorpoPixel)
-
     btZoom = pygame.image.load("images/imgbtzoom.png")
     screen.blit(btZoom, (int(tamanhoTela[0] * 0.9), int(tamanhoTela[1] * 0.7)))
 
+    #Escreve informações na tela
     myfont = pygame.font.SysFont(font, int((tamanhoTela[0] * 0.25) * tamanhoTexto))
-
-    textsurface = myfont.render(f"FPS: {int(fps_rate)}", True, corTextoSecundaria)
+    textsurface = myfont.render(f"FPS: {str(FPS)}", True, corTextoSecundaria)
     screen.blit(textsurface, (int(tamanhoTela[0] * 0.025), 5))
     textsurface = myfont.render("Local centro da tela: "+str([int(centroTela[0]), int(centroTela[1])]), True, corTextoSecundaria)
     screen.blit(textsurface, (int(tamanhoTela[0] * 0.025), 25))
@@ -143,16 +150,17 @@ while running:
     screen.blit(textsurface, (int(tamanhoTela[0] * 0.025), 50))
 
     if (time() - timeContoufps) > 1:
-        fps_rate = fpss
+        FPS = fps
         timeContoufps = time()
-        fpss = 0
-    fpss += 1
+        fps = 0
+    fps += 1
 
     # Verefica se o tempo de simulação chegou ao fim
     if (time() - tempo_inicio) > segundos_de_simulacao:
         running = False
 
+    # Atualiza janela Pygame e define FPS
     pygame.display.flip()
-    clock.tick(FPS)
+    clock.tick(FPS_rate)
 
 pygame.quit()

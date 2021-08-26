@@ -1,3 +1,5 @@
+
+
 def hasColision(area1, area2):
     area1ponto1 = area1[0]
     area1ponto2 = [area1[1][0], area1[0][1]]
@@ -19,9 +21,8 @@ def hasColision(area1, area2):
     return False
 
 def getLugatPixel(distanciaKm, tamanhoTela, zoom):
-    #centroTela = [zoom/2, zoom/2]
-    return [int(((tamanhoTela[0]/zoom)*(distanciaKm[0]))+(tamanhoTela[0]*0.5)),
-            int(((tamanhoTela[1]/zoom)*(distanciaKm[1]))+(tamanhoTela[0]*0.5))]
+    return [int(distanciaKmToPixel(distanciaKm[0], tamanhoTela[0], zoom)+(tamanhoTela[0]*0.5)),
+            int(distanciaKmToPixel(distanciaKm[1], tamanhoTela[1], zoom)+(tamanhoTela[1]*0.5))]
 
 def distanciaKmToPixel(distanciaKm, tamanhoTela, zoom):
     return int((tamanhoTela/zoom)*distanciaKm)

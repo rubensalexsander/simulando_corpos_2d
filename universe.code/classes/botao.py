@@ -1,4 +1,4 @@
-from utils import *
+#from utils import *
 
 class Botao:
     def __init__(self, lugar=[0,0], texto='', cor=(150,150,150), corTexto=(255,255,255), tamanho=[20,20], tamanhoTexto=0.1, comando=None, codigo=None):
