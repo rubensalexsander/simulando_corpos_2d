@@ -84,27 +84,24 @@ while running:
             areaClique = pygame.mouse.get_pos()
             for botao in botoes:
                 if hasColision(botao.getArea(), mouse.getArea(areaClique)):
-                    try:
-                        codigo = botao.codigo
-                        if codigo == None:
-                            print('Botão sem comando definido.')
-                        elif codigo == 0:
-                            running = False
-                        elif codigo == 'btChangecenterCima':
-                            changeCenter = codigo
-                        elif codigo == 'btChangecenterBaixo':
-                            changeCenter = codigo
-                        elif codigo == 'btChangecenterLeft':
-                            changeCenter = codigo
-                        elif codigo == 'btChangecenterRight':
-                            changeCenter = codigo
-                        elif codigo == 'btMaisZoom':
-                            changeZoom = codigo
-                        elif codigo == 'btMenosZoom':
-                            changeZoom = codigo
-
-                    except:
-                        print('Erro ao executar comando do botão.')
+                    codigo = botao.codigo
+                    if codigo == None:
+                        print('Botão sem comando definido.')
+                    elif codigo == 0:
+                        running = False
+                    elif codigo == 'btChangecenterCima':
+                        changeCenter = codigo
+                    elif codigo == 'btChangecenterBaixo':
+                        changeCenter = codigo
+                    elif codigo == 'btChangecenterLeft':
+                        changeCenter = codigo
+                    elif codigo == 'btChangecenterRight':
+                        changeCenter = codigo
+                    elif codigo == 'btMaisZoom':
+                        changeZoom = codigo
+                    elif codigo == 'btMenosZoom':
+                        changeZoom = codigo
+                        
                     break
 
     if changeCenter == 'btChangecenterCima':
