@@ -1,4 +1,5 @@
 import pygame
+from pygame import draw
 from classes.universo import Universo
 from classes.corpo import Corpo
 from classes.botao import Botao
@@ -8,8 +9,9 @@ from utils import *
 
 #Configurações----
 tamanhoTela = [600,600]
-FPS_rate=10000
-segundos_de_simulacao = 180
+FPS_rate=30000
+segundos_de_simulacao = 18000
+show_squadinfors = False
 
 corUniverso = (3, 6, 13)
 corPrimaria = (13, 16, 23)
@@ -22,7 +24,7 @@ font = 'ARIAL'
 tamanhoTexto = 0.1
 #-----------------
 #Variáveis--------
-zoom = 1000000 #Zoom inicial
+zoom = 500000 #Zoom inicial
 centroTela = [int(zoom/2), int(zoom/2)] #Local de início
 changeCenter = None
 changeZoom = None
@@ -44,13 +46,20 @@ def criaBotoes():
 
 def criaCorpos():
     corpos = []
-    lua = Corpo((7.34 * (10**19)), raio=1737, lugar=[784400, 400000], cor=(255, 255, 150))
-    lua.putForca([530**9,300**9], 1)
-    terra = Corpo((5.972 * (10**24)), raio=6371, lugar=[zoom/2, zoom/2], cor=(0, 0, 255))
-    terra._velocidade = [1000, 2000]
+    lua5 = Corpo((7.34 * (10**19)), raio=1737, lugar=[250000, 400000], cor=(0, 255, 50), nome='Lua')
+    lua5.putForca([480**9,200**9], 1)
+    lua6 = Corpo((7.34 * (10**19)), raio=1737, lugar=[350000, 150000], cor=(255, 145, 150), nome='Lua')
+    lua6.putForca([-500**9,200**9], 1)
+    lua7 = Corpo((7.34 * (10**19)), raio=1737, lugar=[250000, 150000], cor=(255, 255, 100), nome='Lua')
+    lua7.putForca([500**9,200**9], 1)
+    terra = Corpo((5.972 * (10**24)), raio=6371, lugar=[zoom/2, zoom/2], cor=(0, 0, 255), nome='Terra')
+    terra._velocidade = [-500, 200]
 
-    corpos.append(lua)
+    corpos.append(lua5)
+    corpos.append(lua6)
+    corpos.append(lua7)
     corpos.append(terra)
+    
     return corpos
 
 #-----------------
@@ -67,6 +76,9 @@ universo = Universo(corpos=criaCorpos())
 tempo_inicio = time()
 timeContoufps = time()
 #-----------------
+
+seguir = universo.corpos[0]
+seguir = None
 
 running = True
 while running:
@@ -104,19 +116,23 @@ while running:
                         
                     break
 
-    if changeCenter == 'btChangecenterCima':
-        centroTela[1] -= zoom/100
-    elif changeCenter == 'btChangecenterBaixo':
-        centroTela[1] += zoom/100
-    elif changeCenter == 'btChangecenterLeft':
-        centroTela[0] -= zoom/100
-    elif changeCenter == 'btChangecenterRight':
-        centroTela[0] += zoom/100
+    if not seguir:
+        if changeCenter == 'btChangecenterCima':
+            centroTela[1] -= zoom/100
+        elif changeCenter == 'btChangecenterBaixo':
+            centroTela[1] += zoom/100
+        elif changeCenter == 'btChangecenterLeft':
+            centroTela[0] -= zoom/100
+        elif changeCenter == 'btChangecenterRight':
+            centroTela[0] += zoom/100
     
     if changeZoom == 'btMaisZoom':
         zoom -= zoom*0.025
     elif changeZoom == 'btMenosZoom':
         zoom += zoom*0.025
+
+    if seguir:
+        centroTela = seguir.lugar
 
     if FPS:
         universo.update(1 / FPS)
@@ -128,14 +144,35 @@ while running:
         textsurface = myfont.render(botao.texto, True, botao.corTexto)
         screen.blit(textsurface, (int((botao.lugar[0])+botao.tamanho[0]*0.3), int((botao.lugar[1])-botao.tamanho[1]*0.2)))
 
+    btZoom = pygame.image.load("images/imgbtzoom.png")
+    screen.blit(btZoom, (int(tamanhoTela[0] * 0.9), int(tamanhoTela[1] * 0.7)))
+    
     # Escreve corpos
     for corpo in universo.corpos:
         tamanhoCorpoPixel = distanciaKmToPixel(corpo.getTamanho(), tamanhoTela[0], zoom)
         lugarCorpoPixel = getLugatPixel([corpo.getLugar()[0]-centroTela[0], corpo.getLugar()[1]-centroTela[1]], tamanhoTela, zoom)
-        #if tamanhoCorpoPixel < 1: tamanhoCorpoPixel=1
-        pygame.draw.circle(screen, corpo.getCor(), getLugatPixel([corpo.getLugar()[0]-centroTela[0], corpo.getLugar()[1]-centroTela[1]], tamanhoTela, zoom), tamanhoCorpoPixel)
-    btZoom = pygame.image.load("images/imgbtzoom.png")
-    screen.blit(btZoom, (int(tamanhoTela[0] * 0.9), int(tamanhoTela[1] * 0.7)))
+        def draw_squad(screen, lugar, tamanho, cor=[0, 255, 0]):
+            lado_tamanho = tamanho*1.25
+            ponto1 = [int(lugar[0]-lado_tamanho), int(lugar[1]-lado_tamanho)] 
+            ponto2 = [int(lugar[0]+lado_tamanho), int(lugar[1]-lado_tamanho)]
+            ponto3 = [int(lugar[0]-lado_tamanho), int(lugar[1]+lado_tamanho)]
+            ponto4 = [int(lugar[0]+lado_tamanho), int(lugar[1]+lado_tamanho)]
+
+            pygame.draw.line(screen, cor, ponto1, ponto2) #Linha 1
+            pygame.draw.line(screen, cor, ponto3, ponto4) #Linha 2
+            pygame.draw.line(screen, cor, ponto1, ponto3) #Linha 3
+            pygame.draw.line(screen, cor, ponto2, ponto4) #Linha 4
+
+            myfont = pygame.font.SysFont(font, int(lado_tamanho*0.2))
+            textsurface = myfont.render(corpo.nome, True, cor)
+            screen.blit(textsurface, (ponto1[0], ponto1[1]))
+            textsurface = myfont.render(str([int(corpo.lugar[0]),int(corpo.lugar[1])]), True, cor)
+            screen.blit(textsurface, (ponto1[0], ponto1[1]-(lado_tamanho*0.25)))
+        
+        if show_squadinfors and (not tamanhoCorpoPixel<1):
+            draw_squad(screen, lugarCorpoPixel, tamanhoCorpoPixel, (0,255,0))
+        
+        pygame.draw.circle(screen, corpo.getCor(), lugarCorpoPixel, tamanhoCorpoPixel)
 
     #Escreve informações na tela
     myfont = pygame.font.SysFont(font, int((tamanhoTela[0] * 0.25) * tamanhoTexto))

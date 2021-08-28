@@ -2,7 +2,8 @@
 from classes.rastro import *
 
 class Corpo:
-    def __init__(self, massa, raio, cor=[255, 255, 255], lugar=[100,10]):
+    def __init__(self, massa, raio, cor=[255, 255, 255], lugar=[100,10], nome='None'):
+        self.nome = nome
         self._massa = massa
         self._densidade = massa/raio
         self._raio = raio

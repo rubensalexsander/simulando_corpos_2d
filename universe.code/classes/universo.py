@@ -1,3 +1,4 @@
+from classes.corpo import Corpo
 from math import sqrt
 
 class Universo:
@@ -33,46 +34,47 @@ class Universo:
                     corpo2.putForca(Fg[1], dt)
 
                     if d < (corpo._raio+corpo2._raio):
+                        print('Impacto')
                         massa1 = corpo.getMassa()
                         massa2 = corpo2.getMassa()
                         massas = massa1+massa2
+
                         cor1 = corpo.getCor()
                         cor2 = corpo2.getCor()
                         cor = int((cor1[0]*massa1+cor2[0]*massa2)/massas), int((cor1[1]*massa1+cor2[1]*massa2)/massas), int((cor1[2]*massa1+cor2[2]*massa2)/massas)
+                        
                         velocidade = [((corpo._velocidade[0]*massa1+corpo2._velocidade[0]*massa2)/massas), ((corpo._velocidade[1]*massa1+corpo2._velocidade[1]*massa2)/massas)]
+                        
                         lugar1 = corpo.lugar
                         lugar2 = corpo2.lugar
+                        lugar = [int((lugar1[0]*massa1+lugar2[0]*massa2)/massas), 
+                                int((lugar1[1]*massa1+lugar2[1]*massa2)/massas)]
 
-                        maior = corpo
-                        menor = corpo2
+                        raio1 = corpo.getRaio()
+                        raio2 = corpo2.getRaio()
+                        raios = raio1
+                        if raio1 < raio2:
+                            raios=raio2
 
-                        if massa1 < massa2:
-                            maior = corpo2
-                            menor = corpo
-
-                        raio1 = maior.getRaio()
-                        raio2 = menor.getRaio()
-                        raios = raio1 + ((raio1+raio2)/raio1)
-
-                        maior._massa = massas
-                        maior._raio = raios
-                        maior._cor = cor
-                        maior.putForca([menor._velocidade[0]*menor._massa, menor._velocidade[1]*menor._massa], dt)
-                        maior._velocidade = velocidade
+                        new_corpo = Corpo(massas, raios, cor=cor, lugar=lugar)
+                        new_corpo._velocidade = velocidade
+                        self.corpos.append(new_corpo)
+                        
 
                         try:
-                            self._lista_corpos.remove(menor)
+                            self.corpos.remove(corpo)
+                            self.corpos.remove(corpo2)
                         except: pass
 
                         break
 
     def getListadecorpos(self):
-        return self._lista_corpos
+        return self.corpos
 
-    def setListadecorpos(self, listaDecorpos):
-        self.listaCorpos = listaDecorpos
+    def setListadecorpos(self, corpos):
+        self.corpos = corpos
 
     def addCorpo(self, corpo):
-        self._lista_corpos.append(corpo)
+        self.corpos.append(corpo)
 
     def setVisualizar(self, visualizar): self.visualizar = visualizar
