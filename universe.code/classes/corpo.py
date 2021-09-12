@@ -13,25 +13,24 @@ class Corpo:
         self.raio = raio
         self._velocidade = [0,0]
         self._aceleracao = [0,0]
+        self.showRastro = True
         self._lista_rastros = []
 
     def update(self, dt):
+        lugarxa = self.lugar[0]
+        lugarya = self.lugar[1]
         self._velocidade[0] += self._aceleracao[0] *dt
         self._velocidade[1] += self._aceleracao[1] *dt
 
         self.lugar[0] += self._velocidade[0] * dt
         self.lugar[1] += self._velocidade[1] * dt
-
-        '''
-        lugarxa = self.lugar[0]
-        lugarya = self.lugar[1]
-        if self._mundo.showRastro:
+        
+        """if self.showRastro:
             
             if len(self._lista_rastros) > 500:
                 self._lista_rastros.remove(self._lista_rastros[0])
-            self._lista_rastros.append([self._mundo._display, self._cor,(lugarxa/self._mundo.km_pixel, lugarya/self._mundo.km_pixel), self._lugar_pixel, 1])
-            for rastro in self._lista_rastros:
-                draw.line(rastro[0], rastro[1], rastro[2], rastro[3], rastro[4])'''
+            self._lista_rastros.append([self._cor,(lugarxa, lugarya), self.lugar, 1])"""
+            
 
 
     def getAceleracao(self): return self._aceleracao

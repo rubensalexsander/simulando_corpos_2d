@@ -8,7 +8,7 @@ from time import time
 from utils import *
 
 #Configurações----
-tamanhoTela = [600,600]
+tamanhoTela = [700,700]
 FPS_rate=30000
 segundos_de_simulacao = 18000
 show_squadinfors = False
@@ -26,6 +26,7 @@ tamanhoTexto = 0.1
 #Variáveis--------
 zoom = 500000 #Zoom inicial
 centroTela = [int(zoom/2), int(zoom/2)] #Local de início
+#centroTela = [-10000000, -10000000]
 changeCenter = None
 changeZoom = None
 fps = 0
@@ -46,19 +47,25 @@ def criaBotoes():
 
 def criaCorpos():
     corpos = []
-    lua5 = Corpo((7.34 * (10**19)), raio=1737, lugar=[250000, 400000], cor=(0, 255, 50), nome='Lua')
-    lua5.putForca([480**9,200**9], 1)
+    lua5 = Corpo((9.34 * (10**19)), raio=1737, lugar=[250000, 400000], cor=(0, 255, 50), nome='Lua')
+    lua5.putForca([555**9,200**9], 1)
     lua6 = Corpo((7.34 * (10**19)), raio=1737, lugar=[350000, 150000], cor=(255, 145, 150), nome='Lua')
-    lua6.putForca([-500**9,200**9], 1)
+    lua6.putForca([-530**9,200**9], 1)
     lua7 = Corpo((7.34 * (10**19)), raio=1737, lugar=[250000, 150000], cor=(255, 255, 100), nome='Lua')
-    lua7.putForca([500**9,200**9], 1)
+    lua7.putForca([530**9,200**9], 1)
+    corpo8 = Corpo((12.34 * (10**19)), raio=2737, lugar=[400000, 400000], cor=(100, 150, 200), nome='Lua')
+    corpo8.putForca([-540**9,100**9], 1)
     terra = Corpo((5.972 * (10**24)), raio=6371, lugar=[zoom/2, zoom/2], cor=(0, 0, 255), nome='Terra')
     terra._velocidade = [-500, 200]
+    terra2 = Corpo((7.972 * (10**20)), raio=3371, lugar=[int(zoom*0.3), int(zoom*0.2)], cor=(230, 170, 50), nome='Terra')
+    terra2._velocidade = [25000, 200]
 
     corpos.append(lua5)
     corpos.append(lua6)
     corpos.append(lua7)
+    corpos.append(corpo8)
     corpos.append(terra)
+    corpos.append(terra2)
     
     return corpos
 
@@ -151,6 +158,9 @@ while running:
     for corpo in universo.corpos:
         tamanhoCorpoPixel = distanciaKmToPixel(corpo.getTamanho(), tamanhoTela[0], zoom)
         lugarCorpoPixel = getLugatPixel([corpo.getLugar()[0]-centroTela[0], corpo.getLugar()[1]-centroTela[1]], tamanhoTela, zoom)
+        for rastro in corpo._lista_rastros:
+            draw.line(screen, rastro[0], rastro[1], rastro[2], rastro[3])
+            
         def draw_squad(screen, lugar, tamanho, cor=[0, 255, 0]):
             lado_tamanho = tamanho*1.25
             ponto1 = [int(lugar[0]-lado_tamanho), int(lugar[1]-lado_tamanho)] 
@@ -178,10 +188,12 @@ while running:
     myfont = pygame.font.SysFont(font, int((tamanhoTela[0] * 0.25) * tamanhoTexto))
     textsurface = myfont.render(f"FPS: {str(FPS)}", True, corTextoSecundaria)
     screen.blit(textsurface, (int(tamanhoTela[0] * 0.025), 5))
-    textsurface = myfont.render("Local centro da tela: "+str([int(centroTela[0]), int(centroTela[1])]), True, corTextoSecundaria)
+    textsurface = myfont.render("Local centro da tela: "+f"[x={getStringdist(centroTela[0])}, y={getStringdist(centroTela[1])}]", True, corTextoSecundaria)
     screen.blit(textsurface, (int(tamanhoTela[0] * 0.025), 25))
-    textsurface = myfont.render(f"Zoom: {int(zoom)}", True, corTextoSecundaria)
-    screen.blit(textsurface, (int(tamanhoTela[0] * 0.025), 50))
+    textsurface = myfont.render(f"Zoom: {getStringdist(zoom)}", True, corTextoSecundaria)
+    screen.blit(textsurface, (int(tamanhoTela[0] * 0.025), 45))
+    
+    
 
     if (time() - timeContoufps) > 1:
         FPS = fps
