@@ -1,5 +1,3 @@
 # universe.code
 
-### Olá 👋 
-
-- Projeto voltado à simulação de corpos em um espaço.
+Simulação de corpos em ambiente 2D utilizando as leis de Newton.
