@@ -34,7 +34,7 @@ class Universo:
                     corpo2.putForca(Fg[1], dt)
 
                     if d < (corpo._raio+corpo2._raio):
-                        print('Impacto')
+                        #Impacto detectado
                         massa1 = corpo.getMassa()
                         massa2 = corpo2.getMassa()
                         massas = massa1+massa2

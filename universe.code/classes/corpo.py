@@ -1,5 +1,6 @@
 
-from classes.rastro import *
+#from classes.rastro import *
+from random import randint
 
 class Corpo:
     def __init__(self, massa, raio, cor=[255, 255, 255], lugar=[100,10], nome='None'):
@@ -8,6 +9,7 @@ class Corpo:
         self._densidade = massa/raio
         self._raio = raio
         self._cor = cor
+        self._cor = (randint(100,255), randint(100,255), randint(230,255))
         self._tamanho = raio
         self.lugar = lugar
         self.raio = raio
@@ -30,8 +32,6 @@ class Corpo:
             if len(self._lista_rastros) > 500:
                 self._lista_rastros.remove(self._lista_rastros[0])
             self._lista_rastros.append([self._cor,(lugarxa, lugarya), self.lugar, 1])"""
-            
-
 
     def getAceleracao(self): return self._aceleracao
     def getVelocidade(self): return self._velocidade
