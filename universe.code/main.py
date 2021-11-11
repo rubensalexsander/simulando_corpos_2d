@@ -7,7 +7,7 @@ from utils import *
 
 #Variáveis--------
 zoom = 500000 #Zoom inicial
-centroTela = [int(zoom/2), int(zoom/2)] #Local de início
+centroTela = [int(zoom/2), int(zoom/2)] #Local de início ---
 #centroTela = [-10000000, -10000000]
 changeCenter = None
 changeZoom = None
