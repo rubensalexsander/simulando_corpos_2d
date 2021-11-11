@@ -1,4 +1,4 @@
-from arFront import *
+from libs.arFront import *
 from classes.universo import Universo
 from classes.corpo import Corpo
 from time import time
@@ -38,7 +38,7 @@ def criaCorpos():
     return corpos
 
 #Definições-------
-mouse = Mouse()
+mouse = ()
 universo = Universo(corpos=criaCorpos())
 #-----------------
 #Times------------
@@ -48,7 +48,8 @@ tempo_inicio = time()
 corpo_seguir = universo.corpos[0]
 seguir = False
 
-app = App(nomeJanela='Universe.code :P', tema=universeCodeTheme, resolucao=[600,600])
+app = App(nomeJanela='Universe.code :P', tema=universeCodeTheme, resolucao=[800,600])
+app.FPS_rate = 60
 app.txFps.active = True
 app.txARTI.active = True
 app.txARTI.tamanho = 10
@@ -69,6 +70,7 @@ def centerUP():
 
 btCenterUP = app.novoBotao(
     lugar=[0.15, -0.01],
+    cor=app.cor_back,
     bordas=1,
     radius=10,
     tamanho=[0.7, 0.1],
@@ -82,6 +84,7 @@ def centerDOWN():
 
 btCenterDOWN = app.novoBotao(
     lugar=[0.15, 0.91],
+    cor=app.cor_back,
     bordas=1,
     radius=10,
     tamanho=[0.7, 0.1],
@@ -95,6 +98,7 @@ def centerLEFT():
 
 btCenterLEFT = app.novoBotao(
     lugar=[-0.01, 0.15],
+    cor=app.cor_back,
     bordas=1,
     radius=10,
     tamanho=[0.1, 0.7],
@@ -108,6 +112,7 @@ def centerRIGHT():
 
 btCenterRIGHT = app.novoBotao(
     lugar=[0.91, 0.15],
+    cor=app.cor_back,
     bordas=1,
     radius=10,
     tamanho=[0.1, 0.7],
