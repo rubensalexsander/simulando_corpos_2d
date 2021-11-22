@@ -6,7 +6,7 @@ from random import randint
 from utils import *
 
 #Variáveis--------
-zoom = 500000 #Zoom inicial
+zoom = 400000 #Zoom inicial
 centroTela = [int(zoom/2), int(zoom/2)] #Local de início ---
 #centroTela = [-10000000, -10000000]
 changeCenter = None
@@ -15,25 +15,31 @@ show_squadinfors = True
 
 def criaCorpos():
     corpos = []
-    lua5 = Corpo((9.34 * (10**19)), raio=1737, lugar=[250000, 400000], cor=(0, 255, 50), nome='Lua')
-    lua5.putForca([555**9,200**9], 1)
-    lua6 = Corpo((7.34 * (10**19)), raio=1737, lugar=[350000, 150000], cor=(255, 145, 150), nome='Lua')
-    lua6.putForca([-530**9,200**9], 1)
-    lua7 = Corpo((7.34 * (10**19)), raio=1737, lugar=[250000, 150000], cor=(255, 255, 100), nome='Lua')
-    lua7.putForca([530**9,200**9], 1)
-    corpo8 = Corpo((12.34 * (10**19)), raio=2737, lugar=[400000, 400000], cor=(100, 150, 200), nome='Lua')
-    corpo8.putForca([-540**9,100**9], 1)
-    terra = Corpo((5.972 * (10**24)), raio=6371, lugar=[zoom/2, zoom/2], cor=(0, 0, 255), nome='Terra')
-    terra._velocidade = [-500, 200]
-    terra2 = Corpo((7.972 * (10**20)), raio=3371, lugar=[int(zoom*0.3), int(zoom*0.2)], cor=(230, 170, 50), nome='Terra')
-    terra2._velocidade = [25000, 200]
+    terra = Corpo((5.972 * (10**24)), raio=6500, lugar=[250000, 250000], cor=(0, 0, 255), nome='Terra')
+    terra._velocidade = [0, 0]
+    corpo1 = Corpo((5.972 * (9**24)), raio=4000, lugar=[400000, 300000], cor=(200, 200, 255), nome='corpo1')
+    corpo1._velocidade = [35000, -35000]
+    corpo2 = Corpo((5.972 * (9**24)), raio=2500, lugar=[200000, 400000], cor=(150, 255, 180), nome='corpo2')
+    corpo2._velocidade = [-45000, -2000]
+    corpo3 = Corpo((5.972 * (7**24)), raio=2200, lugar=[500000, 10000], cor=(50, 100, 155), nome='corpo3')
+    corpo3._velocidade = [-23000, -8500]
+    corpo4 = Corpo((5.972 * (7**24)), raio=2200, lugar=[300000, 50000], cor=(250, 100, 155), nome='corpo4')
+    corpo4._velocidade = [30000, -2500]
+    corpo5 = Corpo((5.972 * (6**24)), raio=3200, lugar=[100000, 10000], cor=(150, 180, 155), nome='corpo5')
+    corpo5._velocidade = [30000, -8500]
+    corpo6 = Corpo((5.972 * (8**24)), raio=2200, lugar=[500000, 50000], cor=(50, 100, 155), nome='corpo6')
+    corpo6._velocidade = [-20000, -5500]
+    corpo7 = Corpo((5.972 * (7**24)), raio=2200, lugar=[300000, 10000], cor=(150, 200, 255), nome='corpo7')
+    corpo7._velocidade = [-25000, -8500]
 
-    corpos.append(lua5)
-    corpos.append(lua6)
-    corpos.append(lua7)
-    corpos.append(corpo8)
     corpos.append(terra)
-    corpos.append(terra2)
+    corpos.append(corpo1)
+    corpos.append(corpo2)
+    corpos.append(corpo3)
+    corpos.append(corpo4)
+    corpos.append(corpo5)
+    corpos.append(corpo6)
+    corpos.append(corpo7)
     
     return corpos
 
@@ -46,7 +52,7 @@ tempo_inicio = time()
 #-----------------
 
 corpo_seguir = universo.corpos[0]
-seguir = False
+seguir = True
 
 app = App(nomeJanela='Universe.code :P', tema=universeCodeTheme, resolucao=[800,600])
 app.FPS_rate = 60
@@ -59,14 +65,15 @@ def finalizar():
 
 btFinalizar = app.novoBotao(
     string='EXIT',
-    lugar=[0.9, 0.01],
-    tamanho = [0.075,0.085],
+    lugar=[0.995, 0.01],
+    tamanho = [50, 50],
     corTexto=(255,0,0),
     command=finalizar,
+    refer='nr'
 )
 
 def centerUP():
-        centroTela[1] -= zoom/100
+        centroTela[1] -= zoom/10
 
 btCenterUP = app.novoBotao(
     lugar=[0.15, -0.01],
@@ -80,7 +87,7 @@ btCenterUP = app.novoBotao(
     end_draw=True)
 
 def centerDOWN():
-        centroTela[1] += zoom/100
+    centroTela[1] += zoom/10
 
 btCenterDOWN = app.novoBotao(
     lugar=[0.15, 0.91],
@@ -94,7 +101,7 @@ btCenterDOWN = app.novoBotao(
     end_draw=True)
 
 def centerLEFT():
-        centroTela[0] -= zoom/100
+        centroTela[0] -= zoom/10
 
 btCenterLEFT = app.novoBotao(
     lugar=[-0.01, 0.15],
@@ -108,7 +115,7 @@ btCenterLEFT = app.novoBotao(
     end_draw=True)
 
 def centerRIGHT():
-        centroTela[0] += zoom/100
+    centroTela[0] += zoom/10
 
 btCenterRIGHT = app.novoBotao(
     lugar=[0.91, 0.15],
@@ -121,7 +128,57 @@ btCenterRIGHT = app.novoBotao(
     tamanhoTexto=18,
     end_draw=True)
 
-#sqTeste = app.novoSquare(lugar=[0.5,0.5])
+txZoom = app.novoTexto(
+    tamanho=11,
+    lugar=[0.01, 30]
+)
+
+sqZoom = app.novoSquare(
+    lugar=[0.99, 0.99],
+    refer='sr',
+    tamanho=[0.12,50],
+    cor=(-1,-1,-1),
+    bordas=1,
+    corBordas=app.cor_back_secundaria,
+    active=False
+)
+
+def menosZoom():
+    global zoom
+    zoom += zoom * 0.25
+
+btMenosZoom = app.novoBotao(
+    string='-',
+    lugar=[0.91, 0.99],
+    tamanho=[30,50],
+    tamanhoTexto=25,
+    refer='sr',
+    cor=(-1,-1,-1),
+    bordas=1,
+    command=menosZoom
+)
+
+def maisZoom():
+    global zoom
+    zoom -= zoom * 0.25
+
+btMaisZoom = app.novoBotao(
+    string='+',
+    lugar=[0.98, 0.99],
+    tamanho=[30,50],
+    tamanhoTexto=25,
+    refer='sr',
+    cor=(-1,-1,-1),
+    bordas=1,
+    command=maisZoom
+)
+
+txBtZoom = app.novoTexto(
+    lugar=[0.975, 0.9],
+    refer='sr',
+    string='ZOOM',
+    cor=app.cor_back_secundaria
+)
 
 #Loop de game
 running = True
@@ -136,24 +193,55 @@ while running:
             centroTela[0] -= zoom/100
         elif changeCenter == 'btChangecenterRight':
             centroTela[0] += zoom/100
-    
-    if changeZoom == 'btMaisZoom':
-        zoom -= zoom*0.025
-    elif changeZoom == 'btMenosZoom':
-        zoom += zoom*0.025
 
     if seguir:
         centroTela = corpo_seguir.lugar
+    
+    txZoom.string = 'Zoom: ' + getStringdist(zoom)
 
     if app.FPS:
         universo.update(1 / app.FPS)
     
     # Escreve corpos
     for corpo in universo.corpos:
-        tamanhoCorpoPixel = distanciaKmToPixel(corpo.getTamanho(), app.resolucao[0], zoom)
-        lugarCorpoPixel = getLugatPixel([corpo.getLugar()[0]-centroTela[0], corpo.getLugar()[1]-centroTela[1]], app.resolucao, zoom)
+        tamanho_corpo = corpo.getTamanho()
+        lugar_corpo = corpo.getLugar()
+        tamanhoCorpoPixel = distanciaKmToPixel(tamanho_corpo, app.resolucao[0], zoom)
+        lugarCorpoPixel = getLugarPixel([lugar_corpo[0]-centroTela[0], lugar_corpo[1]-centroTela[1]], app.resolucao, zoom)
 
         app.drawCircle(corpo.getCor(), lugarCorpoPixel, tamanhoCorpoPixel)
+
+        if show_squadinfors:
+            #Escrve squadInfors
+            app.drawSquare(
+                lugar=lugarCorpoPixel,
+                refer='c',
+                cor=(-1,-1,-1),
+                bordas=1,
+                corBordas=(0,255,0)
+            )
+
+            app.drawText(
+                string=corpo.nome,
+                lugar=[lugarCorpoPixel[0]-10, lugarCorpoPixel[1]-25],
+                refer='c',
+                cor=(0,255,0),
+                tamanho=10
+            )
+        
+        if corpo.showRastro:
+            
+            for linha in corpo._lista_rastros:
+                tamanho_screen = app.screen.get_size()
+                ponto1 = getLugarPixel([linha[0][0]-centroTela[0], linha[0][1]-centroTela[1]], app.resolucao, zoom)
+                ponto2 = getLugarPixel([linha[1][0]-centroTela[0], linha[1][1]-centroTela[1]], app.resolucao, zoom)
+                
+                app.drawLine(
+                    ponto1,
+                    ponto2,
+                    linha[2],
+                    linha[3]
+                    )
 
     saida = app.update()
 

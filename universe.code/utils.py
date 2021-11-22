@@ -1,4 +1,4 @@
-def getLugatPixel(distanciaKm, tamanhoTela, zoom):
+def getLugarPixel(distanciaKm, tamanhoTela, zoom):
     return [int(distanciaKmToPixel(distanciaKm[0], tamanhoTela[0], zoom)+(tamanhoTela[0]*0.5)),
             int(distanciaKmToPixel(distanciaKm[1], tamanhoTela[1], zoom)+(tamanhoTela[1]*0.5))]
 

@@ -58,8 +58,8 @@ class Universo:
 
                         new_corpo = Corpo(massas, raios, cor=cor, lugar=lugar)
                         new_corpo._velocidade = velocidade
+                        new_corpo._lista_rastros = corpo._lista_rastros+corpo2._lista_rastros
                         self.corpos.append(new_corpo)
-                        
 
                         try:
                             self.corpos.remove(corpo)
