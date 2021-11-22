@@ -22,9 +22,9 @@ class Universo:
         self.corpos = corpos
         self.showRastro = False
 
-    def update(self, dt):
+    def update(self, dt, show_rastro=False):
         for corpo in self.corpos:
-            corpo.update(dt)
+            corpo.update(dt, show_rastro)
             for corpo2 in self.corpos:
 
                 if corpo != corpo2:

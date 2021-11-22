@@ -6,12 +6,13 @@ from random import randint
 from utils import *
 
 #Variáveis--------
-zoom = 400000 #Zoom inicial
+zoom = 500000 #Zoom inicial
 centroTela = [int(zoom/2), int(zoom/2)] #Local de início ---
 #centroTela = [-10000000, -10000000]
 changeCenter = None
 changeZoom = None
-show_squadinfors = True
+show_squadinfors = False
+show_rastro = False
 
 def criaCorpos():
     corpos = []
@@ -52,9 +53,9 @@ tempo_inicio = time()
 #-----------------
 
 corpo_seguir = universo.corpos[0]
-seguir = True
+seguir = False
 
-app = App(nomeJanela='Universe.code :P', tema=universeCodeTheme, resolucao=[800,600])
+app = App(nomeJanela='Simulando corpos em Python :P', tema=universeCodeTheme, resolucao=[800,600])
 app.FPS_rate = 60
 app.txFps.active = True
 app.txARTI.active = True
@@ -64,12 +65,15 @@ def finalizar():
     return 'finish'
 
 btFinalizar = app.novoBotao(
-    string='EXIT',
+    string='X',
+    tamanhoTexto=20,
     lugar=[0.995, 0.01],
     tamanho = [50, 50],
     corTexto=(255,0,0),
     command=finalizar,
-    refer='nr'
+    refer='nr',
+    bordas=1,
+    corBordas=(255,0,0)
 )
 
 def centerUP():
@@ -180,6 +184,34 @@ txBtZoom = app.novoTexto(
     cor=app.cor_back_secundaria
 )
 
+def change_rastro():
+    global show_rastro
+    if show_rastro:
+        show_rastro = False
+    else:
+        show_rastro = True
+
+bt_rastro = app.novoBotao(
+    lugar=[0.01, 0.86],
+    tamanho=[85,30],
+    string='Rastro',
+    command=change_rastro
+)
+
+def change_infors():
+    global show_squadinfors
+    if show_squadinfors:
+        show_squadinfors = False
+    else:
+        show_squadinfors = True
+
+bt_infors = app.novoBotao(
+    lugar=[0.01, 0.925],
+    tamanho=[85,30],
+    string='Informações',
+    command=change_infors
+)
+
 #Loop de game
 running = True
 while running:
@@ -200,7 +232,7 @@ while running:
     txZoom.string = 'Zoom: ' + getStringdist(zoom)
 
     if app.FPS:
-        universo.update(1 / app.FPS)
+        universo.update(1 / app.FPS, show_rastro)
     
     # Escreve corpos
     for corpo in universo.corpos:
@@ -229,7 +261,7 @@ while running:
                 tamanho=10
             )
         
-        if corpo.showRastro:
+        if show_rastro:
             
             for linha in corpo._lista_rastros:
                 tamanho_screen = app.screen.get_size()

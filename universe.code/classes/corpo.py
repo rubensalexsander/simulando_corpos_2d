@@ -15,11 +15,10 @@ class Corpo:
         self.raio = raio
         self._velocidade = [0,0]
         self._aceleracao = [0,0]
-        self.showRastro = True
         self._lista_rastros = []
         self.append_rastro = [True]
 
-    def update(self, dt):
+    def update(self, dt, show_rastro=False):
         lugar_antigo = [self.lugar[0], self.lugar[1]]
         
         self._velocidade[0] += self._aceleracao[0] *dt
@@ -28,7 +27,7 @@ class Corpo:
         self.lugar[0] += self._velocidade[0] * dt
         self.lugar[1] += self._velocidade[1] * dt
 
-        if self.showRastro:
+        if show_rastro:
             if len(self._lista_rastros) > 100: self._lista_rastros.remove(self._lista_rastros[0])
             if self.append_rastro[0]:
                 self._lista_rastros.append((lugar_antigo, self.lugar[:], self._cor, 1))
