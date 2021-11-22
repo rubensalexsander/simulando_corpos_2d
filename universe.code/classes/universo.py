@@ -56,7 +56,7 @@ class Universo:
                         if raio1 < raio2:
                             raios=raio2
 
-                        new_corpo = Corpo(massas, raios, cor=cor, lugar=lugar)
+                        new_corpo = Corpo(massas, raios, cor=cor, lugar=lugar, nome=corpo.nome)
                         new_corpo._velocidade = velocidade
                         new_corpo._lista_rastros = corpo._lista_rastros+corpo2._lista_rastros
                         self.corpos.append(new_corpo)

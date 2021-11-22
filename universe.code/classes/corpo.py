@@ -34,6 +34,8 @@ class Corpo:
                 self.append_rastro = [False, False, True]
             else:
                 self.append_rastro.remove(self.append_rastro[0])
+        else:
+            self._lista_rastros = []
 
     def getAceleracao(self): return self._aceleracao
     def getVelocidade(self): return self._velocidade
