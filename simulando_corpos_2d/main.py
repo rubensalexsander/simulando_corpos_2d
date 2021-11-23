@@ -8,14 +8,14 @@ def criaCorpos():
     corpos = []
     terra = Corpo((5.972 * (10**24)), raio=6500, lugar=[250000, 250000], cor=(0, 0, 255), nome='Terra')
     terra._velocidade = [0, 0]
-    corpo1 = Corpo((5.972 * (9**24)), raio=4000, lugar=[400000, 300000], cor=(200, 200, 255), nome='corpo1')
+    corpo1 = Corpo((5.972 * (8**24)), raio=4000, lugar=[400000, 300000], cor=(200, 200, 255), nome='corpo1')
     corpo1._velocidade = [35000, -35000]
     corpo2 = Corpo((5.972 * (9**24)), raio=2500, lugar=[200000, 400000], cor=(150, 255, 180), nome='corpo2')
     corpo2._velocidade = [-45000, -2000]
     corpo3 = Corpo((5.972 * (7**24)), raio=2200, lugar=[500000, 10000], cor=(50, 100, 155), nome='corpo3')
     corpo3._velocidade = [-23000, -8500]
     corpo4 = Corpo((5.972 * (7**24)), raio=2200, lugar=[300000, 50000], cor=(250, 100, 155), nome='corpo4')
-    corpo4._velocidade = [30000, -2500]
+    corpo4._velocidade = [32000, -2500]
     corpo5 = Corpo((5.972 * (6**24)), raio=3200, lugar=[100000, 10000], cor=(150, 180, 155), nome='corpo5')
     corpo5._velocidade = [30000, -8500]
     corpo6 = Corpo((5.972 * (8**24)), raio=2200, lugar=[500000, 50000], cor=(50, 100, 155), nome='corpo6')
