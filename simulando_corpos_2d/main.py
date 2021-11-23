@@ -2,17 +2,7 @@ from libs.arFront import *
 from classes.universo import Universo
 from classes.corpo import Corpo
 from time import time
-from random import randint
 from utils import *
-
-#Variáveis--------
-zoom = 500000 #Zoom inicial
-centroTela = [int(zoom/2), int(zoom/2)] #Local de início ---
-#centroTela = [-10000000, -10000000]
-changeCenter = None
-changeZoom = None
-show_squadinfors = False
-show_rastro = False
 
 def criaCorpos():
     corpos = []
@@ -44,22 +34,21 @@ def criaCorpos():
     
     return corpos
 
-#Definições-------
+#Variáveis--------
 mouse = ()
 universo = Universo(corpos=criaCorpos())
-#-----------------
-#Times------------
-tempo_inicio = time()
-#-----------------
+app = App(nomeJanela='Simulando corpos em Python :P', tema=universeCodeTheme, resolucao=[800,600])
 
+#Definições iniciais-------
+zoom = 500000 #Zoom inicial
+centroTela = [200000, 200000] #Local de início ---
 corpo_seguir = universo.corpos[0]
 seguir = False
-
-app = App(nomeJanela='Simulando corpos em Python :P', tema=universeCodeTheme, resolucao=[800,600])
+show_squadinfors = False
+show_rastro = False
 app.FPS_rate = 60
 app.txFps.active = True
-app.txARTI.active = True
-app.txARTI.tamanho = 10
+#--------------------------
 
 def finalizar():
     return 'finish'
@@ -186,10 +175,8 @@ txBtZoom = app.novoTexto(
 
 def change_rastro():
     global show_rastro
-    if show_rastro:
-        show_rastro = False
-    else:
-        show_rastro = True
+    if show_rastro: show_rastro = False
+    else: show_rastro = True
 
 bt_rastro = app.novoBotao(
     lugar=[0.01, 0.86],
@@ -200,10 +187,8 @@ bt_rastro = app.novoBotao(
 
 def change_infors():
     global show_squadinfors
-    if show_squadinfors:
-        show_squadinfors = False
-    else:
-        show_squadinfors = True
+    if show_squadinfors: show_squadinfors = False
+    else: show_squadinfors = True
 
 bt_infors = app.novoBotao(
     lugar=[0.01, 0.925],
@@ -215,17 +200,6 @@ bt_infors = app.novoBotao(
 #Loop de game
 running = True
 while running:
-
-    if not seguir:
-        if changeCenter == 'btChangecenterCima':
-            centroTela[1] -= zoom/100
-        elif changeCenter == 'btChangecenterBaixo':
-            centroTela[1] += zoom/100
-        elif changeCenter == 'btChangecenterLeft':
-            centroTela[0] -= zoom/100
-        elif changeCenter == 'btChangecenterRight':
-            centroTela[0] += zoom/100
-
     if seguir:
         centroTela = corpo_seguir.lugar
     
@@ -262,18 +236,12 @@ while running:
             )
         
         if show_rastro:
-            
             for linha in corpo._lista_rastros:
                 tamanho_screen = app.screen.get_size()
                 ponto1 = getLugarPixel([linha[0][0]-centroTela[0], linha[0][1]-centroTela[1]], app.resolucao, zoom)
                 ponto2 = getLugarPixel([linha[1][0]-centroTela[0], linha[1][1]-centroTela[1]], app.resolucao, zoom)
                 
-                app.drawLine(
-                    ponto1,
-                    ponto2,
-                    linha[2],
-                    linha[3]
-                    )
+                app.drawLine(ponto1, ponto2, linha[2], linha[3])
 
     saida = app.update()
 
