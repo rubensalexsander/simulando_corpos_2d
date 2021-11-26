@@ -6,8 +6,6 @@ from utils import *
 
 def criaCorpos():
     corpos = []
-    terra = Corpo((5.972 * (10**24)), raio=6500, lugar=[250000, 250000], cor=(0, 0, 255), nome='Terra')
-    terra._velocidade = [0, 0]
     corpo1 = Corpo((5.972 * (8**24)), raio=4000, lugar=[400000, 300000], cor=(200, 200, 255), nome='corpo1')
     corpo1._velocidade = [35000, -35000]
     corpo2 = Corpo((5.972 * (9**24)), raio=2500, lugar=[200000, 400000], cor=(150, 255, 180), nome='corpo2')
@@ -23,14 +21,64 @@ def criaCorpos():
     corpo7 = Corpo((5.972 * (7**24)), raio=2200, lugar=[300000, 10000], cor=(150, 200, 255), nome='corpo7')
     corpo7._velocidade = [-25000, -8500]
 
-    corpos.append(terra)
-    corpos.append(corpo1)
-    corpos.append(corpo2)
-    corpos.append(corpo3)
-    corpos.append(corpo4)
-    corpos.append(corpo5)
-    corpos.append(corpo6)
-    corpos.append(corpo7)
+    #Lugar = [0, 0] , massa = 5,972 × 10^24 kg, raio = 6.371
+    terra = Corpo((5972 * (10**24)), raio=6371, lugar=[0, 0], cor=(0, 0, 255), nome='Terra')
+    terra._velocidade = [0, -20904000]
+
+    #lugar = [384400, 0], Massa = 7,349 x 10^22, Raio = 17374
+    lua = Corpo((7349 * (10**22)), raio=1737, lugar=[406000, 0], cor=(200, 200, 200), nome='Lua')
+    lua._velocidade = [0, -10904000+(447920)]
+
+    #Lugar = [-149600000, 0], Massa = 1,989 × 10^30, Raio = 696.340
+    sol = Corpo((1989 * (10**30)), raio=696340, lugar=[-152100000, 0], cor=(255, 255, 0), nome='Sol')
+    sol._velocidade = [0, 0]
+
+    corpo_teste = Corpo((1989 * (10.5**21)), raio=2000, lugar=[0, 0], cor=(255,0,0), nome='Corpo_teste')
+    corpo_teste._velocidade = [0, 0]
+    corpos.append(corpo_teste)
+
+    corpo_teste1 = Corpo((1989 * (7**21)), raio=600, lugar=[-80000, -80000], cor=(255, 100, 50), nome='Corpo_teste1')
+    corpo_teste1._velocidade = [-32000, 32000]
+    corpos.append(corpo_teste1)
+
+    corpo_teste2 = Corpo((1989 * (7**21)), raio=600, lugar=[80000, -80000], cor=(220, 180, 120), nome='Corpo_teste2')
+    corpo_teste2._velocidade = [37000, 37000]
+    corpos.append(corpo_teste2)
+
+    corpo_teste3 = Corpo((1989 * (7**21)), raio=600, lugar=[-80000, 80000], cor=(220, 180, 120), nome='Corpo_teste3')
+    corpo_teste3._velocidade = [-37000, -37000]
+    corpos.append(corpo_teste3)
+
+    corpo_teste4 = Corpo((1989 * (7**21)), raio=600, lugar=[80000, 80000], cor=(255, 100, 50), nome='Corpo_teste4')
+    corpo_teste4._velocidade = [32000, -32000]
+    corpos.append(corpo_teste4)
+
+    corpo_teste5 = Corpo((1989 * (7**21)), raio=600, lugar=[-20000, 0], cor=(255, 10, 10), nome='Corpo_teste5')
+    corpo_teste5._velocidade = [0, -120000]
+    corpos.append(corpo_teste5)
+
+    corpo_teste6 = Corpo((1989 * (7**21)), raio=600, lugar=[20000, 0], cor=(255, 10, 10), nome='Corpo_teste6')
+    corpo_teste6._velocidade = [0, 120000]
+    corpos.append(corpo_teste6)
+
+    corpo_teste7 = Corpo((1989 * (7**21)), raio=600, lugar=[0, -70000], cor=(255, 100, 100), nome='Corpo_teste7')
+    corpo_teste7._velocidade = [-47000, 0]
+    corpos.append(corpo_teste7)
+
+    corpo_teste8 = Corpo((1989 * (7**21)), raio=600, lugar=[0, 70000], cor=(255, 100, 100), nome='Corpo_teste8')
+    corpo_teste8._velocidade = [47000, 0]
+    corpos.append(corpo_teste8)
+
+    #corpos.append(terra)
+    #corpos.append(sol)
+    #corpos.append(lua)
+    #corpos.append(corpo1)
+    #corpos.append(corpo2)
+    #corpos.append(corpo3)
+    #corpos.append(corpo4)
+    #corpos.append(corpo5)
+    #corpos.append(corpo6)
+    #corpos.append(corpo7)
     
     return corpos
 
@@ -38,13 +86,14 @@ def criaCorpos():
 mouse = ()
 universo = Universo(corpos=criaCorpos())
 app = App(nomeJanela='Simulando corpos em Python :P', tema=universeCodeTheme, resolucao=[800,600])
+app.txARTI.active = False
 
 #Definições iniciais-------
-zoom = 500000 #Zoom inicial
-centroTela = [200000, 200000] #Local de início ---
+zoom = 400000 #Zoom inicial
+centroTela = [0, 0] #Local de início ---
 corpo_seguir = universo.corpos[0]
 seguir = False
-show_squadinfors = False
+show_squadinfors = True
 show_rastro = False
 app.FPS_rate = 60
 app.txFps.active = True
@@ -69,11 +118,11 @@ def centerUP():
         centroTela[1] -= zoom/10
 
 btCenterUP = app.novoBotao(
-    lugar=[0.15, -0.01],
+    lugar=[0.35, -0.01],
     cor=app.cor_back,
     bordas=1,
     radius=10,
-    tamanho=[0.7, 0.1],
+    tamanho=[0.3, 0.1],
     command=centerUP,
     string='UP',
     tamanhoTexto=18,
@@ -83,11 +132,11 @@ def centerDOWN():
     centroTela[1] += zoom/10
 
 btCenterDOWN = app.novoBotao(
-    lugar=[0.15, 0.91],
+    lugar=[0.35, 0.91],
     cor=app.cor_back,
     bordas=1,
     radius=10,
-    tamanho=[0.7, 0.1],
+    tamanho=[0.3, 0.1],
     command=centerDOWN,
     string='DOWN',
     tamanhoTexto=18,
@@ -97,11 +146,11 @@ def centerLEFT():
         centroTela[0] -= zoom/10
 
 btCenterLEFT = app.novoBotao(
-    lugar=[-0.01, 0.15],
+    lugar=[-0.01, 0.35],
     cor=app.cor_back,
     bordas=1,
     radius=10,
-    tamanho=[0.1, 0.7],
+    tamanho=[0.1, 0.3],
     command=centerLEFT,
     string='LEFT',
     tamanhoTexto=18,
@@ -111,11 +160,11 @@ def centerRIGHT():
     centroTela[0] += zoom/10
 
 btCenterRIGHT = app.novoBotao(
-    lugar=[0.91, 0.15],
+    lugar=[0.91, 0.35],
     cor=app.cor_back,
     bordas=1,
     radius=10,
-    tamanho=[0.1, 0.7],
+    tamanho=[0.1, 0.3],
     command=centerRIGHT,
     string='RIGHT',
     tamanhoTexto=18,
@@ -197,6 +246,14 @@ bt_infors = app.novoBotao(
     command=change_infors
 )
 
+
+tx_time = app.novoTexto(
+    tamanho=11,
+    lugar=[0.01, 50]
+)
+
+iniciou = False
+
 #Loop de game
 running = True
 while running:
@@ -205,8 +262,16 @@ while running:
     
     txZoom.string = 'Zoom: ' + getStringdist(zoom)
 
+    if corpo_seguir.lugar[1] > zoom:
+        print(round(time()-time_inicio, 4))
+        #running = False
+
     if app.FPS:
+        if not iniciou:
+            iniciou = True
+            time_inicio = time()
         universo.update(1 / app.FPS, show_rastro)
+        tx_time.string = f'Tempo: {round(time()-time_inicio, 1)}'
     
     # Escreve corpos
     for corpo in universo.corpos:

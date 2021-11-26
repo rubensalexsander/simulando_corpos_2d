@@ -26,7 +26,6 @@ class Universo:
         for corpo in self.corpos:
             corpo.update(dt, show_rastro)
             for corpo2 in self.corpos:
-
                 if corpo != corpo2:
                     d = self.getD(corpo, corpo2)
 

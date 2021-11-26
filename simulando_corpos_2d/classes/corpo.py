@@ -28,10 +28,10 @@ class Corpo:
         self.lugar[1] += self._velocidade[1] * dt
 
         if show_rastro:
-            if len(self._lista_rastros) > 100: self._lista_rastros.remove(self._lista_rastros[0])
+            if len(self._lista_rastros) > 200: self._lista_rastros.remove(self._lista_rastros[0])
             if self.append_rastro[0]:
                 self._lista_rastros.append((lugar_antigo, self.lugar[:], self._cor, 1))
-                self.append_rastro = [False, False, True]
+                self.append_rastro = [True]
             else:
                 self.append_rastro.remove(self.append_rastro[0])
         else:
