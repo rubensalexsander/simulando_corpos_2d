@@ -3,97 +3,96 @@ from classes.universo import Universo
 from classes.corpo import Corpo
 from time import time
 from utils import *
+import random
 
-def criaCorpos():
-    corpos = []
-    corpo1 = Corpo((5.972 * (8**24)), raio=4000, lugar=[400000, 300000], cor=(200, 200, 255), nome='corpo1')
-    corpo1._velocidade = [35000, -35000]
-    corpo2 = Corpo((5.972 * (9**24)), raio=2500, lugar=[200000, 400000], cor=(150, 255, 180), nome='corpo2')
-    corpo2._velocidade = [-45000, -2000]
-    corpo3 = Corpo((5.972 * (7**24)), raio=2200, lugar=[500000, 10000], cor=(50, 100, 155), nome='corpo3')
-    corpo3._velocidade = [-23000, -8500]
-    corpo4 = Corpo((5.972 * (7**24)), raio=2200, lugar=[300000, 50000], cor=(250, 100, 155), nome='corpo4')
-    corpo4._velocidade = [32000, -2500]
-    corpo5 = Corpo((5.972 * (6**24)), raio=3200, lugar=[100000, 10000], cor=(150, 180, 155), nome='corpo5')
-    corpo5._velocidade = [30000, -8500]
-    corpo6 = Corpo((5.972 * (8**24)), raio=2200, lugar=[500000, 50000], cor=(50, 100, 155), nome='corpo6')
-    corpo6._velocidade = [-20000, -5500]
-    corpo7 = Corpo((5.972 * (7**24)), raio=2200, lugar=[300000, 10000], cor=(150, 200, 255), nome='corpo7')
-    corpo7._velocidade = [-25000, -8500]
-
-    #Lugar = [0, 0] , massa = 5,972 × 10^24 kg, raio = 6.371
+def criaCorpos(universo1):
+    corpo1 = universo1.new_corpo(
+        massa=(5972 * (8**24)), 
+        raio=8000, 
+        lugar=[100000, 100000], 
+        cor=(200, 200, 255),
+        velocidade=[5000, 0], 
+        nome='corpo1')
+    
+    corpo2 = universo1.new_corpo(
+        massa=(555.972 * (7**24)), 
+        raio=4000, 
+        lugar=[300000, 300000],
+        velocidade=[-45000, 12000],
+        cor=(150, 100, 255), 
+        nome='corpo2')
+    
+    corpo3 = universo1.new_corpo(
+        massa=(455.972 * (7**24)), 
+        raio=5000, 
+        lugar=[100000, 600000],
+        velocidade=[40000, -2000],
+        cor=(250, 255, 255), 
+        nome='corpo3')
+    
+    corpo4 = universo1.new_corpo(
+        massa=(355.972 * (7**24)), 
+        raio=5000, 
+        lugar=[200000, 500000],
+        velocidade=[35000, 0],
+        cor=(150, 155, 255), 
+        nome='corpo4')
+    
+    corpo5 = universo1.new_corpo(
+        massa=(255.972 * (7**24)), 
+        raio=7000, 
+        lugar=[0, 600000],
+        velocidade=[-25000, -40000],
+        cor=(155, 90, 255), 
+        nome='corpo5')
+    
+    corpo6 = universo1.new_corpo(
+        massa=(355.972 * (8**24)), 
+        raio=7000, 
+        lugar=[400000, 800000],
+        velocidade=[-30000, 10000],
+        cor=(200, 205, 195), 
+        nome='corpo6')
+    corpo7 = universo1.new_corpo(
+        massa=(255.972 * (7**24)), 
+        raio=7000, 
+        lugar=[-100000, 200000],
+        velocidade=[-65000, -70000],
+        cor=(255, 190, 155), 
+        nome='corpo7')
+    corpo8 = universo1.new_corpo(
+        massa=(255.972 * (7**24)), 
+        raio=7000, 
+        lugar=[300000, 600000],
+        velocidade=[-25000, -20000],
+        cor=(200, 190, 155), 
+        nome='corpo8')
+    
+    #universo1.new
+    
     terra = Corpo((5972 * (10**24)), raio=6371, lugar=[0, 0], cor=(0, 0, 255), nome='Terra')
-    terra._velocidade = [0, -20904000]
-
+    terra._velocidade = [15000, 24000]
     #lugar = [384400, 0], Massa = 7,349 x 10^22, Raio = 17374
     lua = Corpo((7349 * (10**22)), raio=1737, lugar=[406000, 0], cor=(200, 200, 200), nome='Lua')
     lua._velocidade = [0, -10904000+(447920)]
 
     #Lugar = [-149600000, 0], Massa = 1,989 × 10^30, Raio = 696.340
     sol = Corpo((1989 * (10**30)), raio=696340, lugar=[-152100000, 0], cor=(255, 255, 0), nome='Sol')
-    sol._velocidade = [0, 0]
-
-    corpo_teste = Corpo((1989 * (10.5**21)), raio=2000, lugar=[0, 0], cor=(255,0,0), nome='Corpo_teste')
-    corpo_teste._velocidade = [0, 0]
-    corpos.append(corpo_teste)
-
-    corpo_teste1 = Corpo((1989 * (7**21)), raio=600, lugar=[-80000, -80000], cor=(255, 100, 50), nome='Corpo_teste1')
-    corpo_teste1._velocidade = [-32000, 32000]
-    corpos.append(corpo_teste1)
-
-    corpo_teste2 = Corpo((1989 * (7**21)), raio=600, lugar=[80000, -80000], cor=(220, 180, 120), nome='Corpo_teste2')
-    corpo_teste2._velocidade = [37000, 37000]
-    corpos.append(corpo_teste2)
-
-    corpo_teste3 = Corpo((1989 * (7**21)), raio=600, lugar=[-80000, 80000], cor=(220, 180, 120), nome='Corpo_teste3')
-    corpo_teste3._velocidade = [-37000, -37000]
-    corpos.append(corpo_teste3)
-
-    corpo_teste4 = Corpo((1989 * (7**21)), raio=600, lugar=[80000, 80000], cor=(255, 100, 50), nome='Corpo_teste4')
-    corpo_teste4._velocidade = [32000, -32000]
-    corpos.append(corpo_teste4)
-
-    corpo_teste5 = Corpo((1989 * (7**21)), raio=600, lugar=[-20000, 0], cor=(255, 10, 10), nome='Corpo_teste5')
-    corpo_teste5._velocidade = [0, -120000]
-    corpos.append(corpo_teste5)
-
-    corpo_teste6 = Corpo((1989 * (7**21)), raio=600, lugar=[20000, 0], cor=(255, 10, 10), nome='Corpo_teste6')
-    corpo_teste6._velocidade = [0, 120000]
-    corpos.append(corpo_teste6)
-
-    corpo_teste7 = Corpo((1989 * (7**21)), raio=600, lugar=[0, -70000], cor=(255, 100, 100), nome='Corpo_teste7')
-    corpo_teste7._velocidade = [-47000, 0]
-    corpos.append(corpo_teste7)
-
-    corpo_teste8 = Corpo((1989 * (7**21)), raio=600, lugar=[0, 70000], cor=(255, 100, 100), nome='Corpo_teste8')
-    corpo_teste8._velocidade = [47000, 0]
-    corpos.append(corpo_teste8)
-
-    #corpos.append(terra)
-    #corpos.append(sol)
-    #corpos.append(lua)
-    #corpos.append(corpo1)
-    #corpos.append(corpo2)
-    #corpos.append(corpo3)
-    #corpos.append(corpo4)
-    #corpos.append(corpo5)
-    #corpos.append(corpo6)
-    #corpos.append(corpo7)
+    sol._velocidade = [0, 500000]
     
-    return corpos
-
 #Variáveis--------
 mouse = ()
-universo = Universo(corpos=criaCorpos())
+universo1 = Universo()
+criaCorpos(universo1)
 app = App(nomeJanela='Simulando corpos em Python :P', tema=universeCodeTheme, resolucao=[800,600])
 app.txARTI.active = False
 
 #Definições iniciais-------
 zoom = 400000 #Zoom inicial
 centroTela = [0, 0] #Local de início ---
-corpo_seguir = universo.corpos[0]
-seguir = False
-show_squadinfors = True
+corpo_seguir = 0
+seguir = True
+show_squadinfors = False
 show_rastro = False
 app.FPS_rate = 60
 app.txFps.active = True
@@ -252,34 +251,44 @@ tx_time = app.novoTexto(
     lugar=[0.01, 50]
 )
 
+tx_corpos = app.novoTexto(
+    tamanho=11,
+    lugar=[0.01, 70]
+)
+
 iniciou = False
 
 #Loop de game
 running = True
 while running:
     if seguir:
-        centroTela = corpo_seguir.lugar
+        centroTela = universo1.corpos[corpo_seguir].lugar[:]
     
     txZoom.string = 'Zoom: ' + getStringdist(zoom)
-
-    if corpo_seguir.lugar[1] > zoom:
-        print(round(time()-time_inicio, 4))
-        #running = False
+    tx_corpos.string = 'N corpos: ' + str(len(universo1.corpos))
 
     if app.FPS:
         if not iniciou:
             iniciou = True
             time_inicio = time()
-        universo.update(1 / app.FPS, show_rastro)
+        universo1.update(1 / app.FPS, show_rastro)
         tx_time.string = f'Tempo: {round(time()-time_inicio, 1)}'
     
     # Escreve corpos
-    for corpo in universo.corpos:
+    for corpo in universo1.corpos:
+        if show_rastro:
+            for trass in corpo.trail.trass:
+                tamanho_screen = app.screen.get_size()
+                ponto1 = getLugarPixel([trass['pt1'][0]-centroTela[0], trass['pt1'][1]-centroTela[1]], app.resolucao, zoom)
+                ponto2 = getLugarPixel([trass['pt2'][0]-centroTela[0], trass['pt2'][1]-centroTela[1]], app.resolucao, zoom)
+
+                app.drawLine(ponto1, ponto2, trass['color'], trass['thickness'])
+            
         tamanho_corpo = corpo.getTamanho()
         lugar_corpo = corpo.getLugar()
         tamanhoCorpoPixel = distanciaKmToPixel(tamanho_corpo, app.resolucao[0], zoom)
         lugarCorpoPixel = getLugarPixel([lugar_corpo[0]-centroTela[0], lugar_corpo[1]-centroTela[1]], app.resolucao, zoom)
-
+        
         app.drawCircle(corpo.getCor(), lugarCorpoPixel, tamanhoCorpoPixel)
 
         if show_squadinfors:
@@ -299,14 +308,6 @@ while running:
                 cor=(0,255,0),
                 tamanho=10
             )
-        
-        if show_rastro:
-            for linha in corpo._lista_rastros:
-                tamanho_screen = app.screen.get_size()
-                ponto1 = getLugarPixel([linha[0][0]-centroTela[0], linha[0][1]-centroTela[1]], app.resolucao, zoom)
-                ponto2 = getLugarPixel([linha[1][0]-centroTela[0], linha[1][1]-centroTela[1]], app.resolucao, zoom)
-                
-                app.drawLine(ponto1, ponto2, linha[2], linha[3])
 
     saida = app.update()
 
