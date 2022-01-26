@@ -21,7 +21,7 @@ faz_corpos.aleatorios(
 
 
 #Definições iniciais-------
-zoom = 15000000 #Zoom inicial
+zoom = 15000000 #Zoom inicia
 centroTela = [0, 0] #Local de início ---
 corpo_seguir = 0
 seguir = False
