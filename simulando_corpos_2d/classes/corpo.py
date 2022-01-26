@@ -1,5 +1,4 @@
-#from classes.rastro import *
-from random import choice, randint, random
+from random import randint
 
 class Corpo:
     def __init__(self, massa, raio, cor=[255, 255, 255], lugar=[100,10], velocidade=[0,0], nome='None'):
@@ -9,25 +8,21 @@ class Corpo:
         self._raio = raio
         self._cor = cor
         #self._cor = (randint(100,255), randint(100,255), randint(230,255))
-        self._tamanho = raio
+        self._tamanho = raio #mts
         self.lugar = lugar
         self.raio = raio
-        self._velocidade = velocidade
+        self._velocidade = velocidade #m/s
         self._aceleracao = [0,0]
         self._lista_rastros = []
-        
 
     def update(self, dt, show_rastro=False):
-        lugar_antigo = [self.lugar[0], self.lugar[1]]
-        
         self._velocidade[0] += self._aceleracao[0] *dt
         self._velocidade[1] += self._aceleracao[1] *dt
-
         self.lugar[0] += self._velocidade[0] * dt
         self.lugar[1] += self._velocidade[1] * dt
 
-        if show_rastro:
-            self.trail.update(self.lugar[:])
+        if show_rastro: self.trail.update(self.lugar[:])
+        else: self.trail.trass = []
 
     def getAceleracao(self): return self._aceleracao
     def getVelocidade(self): return self._velocidade

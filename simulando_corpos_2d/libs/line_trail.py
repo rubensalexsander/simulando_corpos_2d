@@ -6,8 +6,8 @@ class Trail:
         self.last_place = None
 
         #Configs-------------
-        self.separacao = 10
-        self.n_trass = 30
+        self.separacao = 15
+        self.n_trass = 20
         #--------------------
 
         self.control_separacao = self.separacao

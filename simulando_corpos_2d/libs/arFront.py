@@ -204,10 +204,7 @@ class App:
     def drawLine(self, ponto1=[0,0], ponto2=[20,0], cor=(255,255,255), espessura=1, end_draw=False):
         self.draws.append(("line", ponto1, ponto2, cor, espessura))
     
-    def update(self):
-        # Escreve end_draw
-        self.screen.fill(self.cor_back)
-
+    def update(self, pause=False):
         # Executa comandos do usuário
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -225,7 +222,6 @@ class App:
         
         for square in self.listSquares:
             if square.active:
-                
                 self.drawSquare(square.cor, square.lugar, square.refer, square.tamanho, square.radius, square.bordas, square.corBordas, square.end_draw)
         
         #Adiciona botões à lista de escrita
@@ -269,43 +265,47 @@ class App:
             pass
         
         #Desenha formas na tela:
-        for form in self.draws:
-            if form[0] == 'square':
-                cor = form[1]
-                lugar = form[2]
-                tamanho = form[3]
-                radius = form[4]
-                bordas = form[5]
-                corBordas = form[6]
+        if not pause:
+            # Escreve end_draw
+            self.screen.fill(self.cor_back)
 
-                if not cor[0] == -1:
-                    pygame.draw.rect(self.screen, cor, (lugar[0], lugar[1], tamanho[0], tamanho[1]), width=0, border_radius=radius)
-                if bordas > 0:
-                    pygame.draw.rect(self.screen, corBordas, (lugar[0], lugar[1], tamanho[0], tamanho[1]), width=bordas, border_radius=radius)
-            
-            elif form[0] == 'text':
-                string = form[1]
-                cor = form[2]
-                lugar = form[3]
-                tamanho = form[4]
-                fonte = form[5]
+            for form in self.draws:
+                if form[0] == 'square':
+                    cor = form[1]
+                    lugar = form[2]
+                    tamanho = form[3]
+                    radius = form[4]
+                    bordas = form[5]
+                    corBordas = form[6]
+
+                    if not cor[0] == -1:
+                        pygame.draw.rect(self.screen, cor, (lugar[0], lugar[1], tamanho[0], tamanho[1]), width=0, border_radius=radius)
+                    if bordas > 0:
+                        pygame.draw.rect(self.screen, corBordas, (lugar[0], lugar[1], tamanho[0], tamanho[1]), width=bordas, border_radius=radius)
                 
-                fonte = pygame.font.SysFont(fonte, tamanho)
-                textsurface = fonte.render(string, True, cor)
-                self.screen.blit(textsurface, lugar)
-            
-            elif form[0] == 'circle':
-                cor = form[1]
-                lugar = form[2]
-                tamanho = form[3]
-                pygame.draw.circle(self.screen, cor, lugar, tamanho)
-            
-            elif form[0] == 'line':
-                ponto1 = form[1]
-                ponto2 = form[2]
-                cor = form[3]
-                espessura = form[4]
-                pygame.draw.line(self.screen, cor, ponto1, ponto2, espessura)
+                elif form[0] == 'text':
+                    string = form[1]
+                    cor = form[2]
+                    lugar = form[3]
+                    tamanho = form[4]
+                    fonte = form[5]
+                    
+                    fonte = pygame.font.SysFont(fonte, tamanho)
+                    textsurface = fonte.render(string, True, cor)
+                    self.screen.blit(textsurface, lugar)
+                
+                elif form[0] == 'circle':
+                    cor = form[1]
+                    lugar = form[2]
+                    tamanho = form[3]
+                    pygame.draw.circle(self.screen, cor, lugar, tamanho)
+                
+                elif form[0] == 'line':
+                    ponto1 = form[1]
+                    ponto2 = form[2]
+                    cor = form[3]
+                    espessura = form[4]
+                    pygame.draw.line(self.screen, cor, ponto1, ponto2, espessura)
 
         self.draws = []
 
