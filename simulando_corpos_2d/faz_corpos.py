@@ -1,5 +1,10 @@
 from random import randint
 
+def getD(ponto1, ponto2):
+    lugar1, lugar2 = ponto1, ponto2
+    d = ((lugar1[0]-lugar2[0])**2+(lugar1[1]-lugar2[1])**2)**(1/2)
+    return d
+
 def aleatorios(universo, quant, area, velocidade_min, velocidade_max, raio_min, raio_max, massa_min, massa_max):
     corpos = []
 
@@ -22,8 +27,58 @@ def aleatorios(universo, quant, area, velocidade_min, velocidade_max, raio_min, 
     
     return corpos
 
+def em_massa(universo, massas, raios, lugares, cores, velocidades):
+    for i in range(len(massas)):
+        universo.new_corpo(
+            massa=massas[i], 
+            raio=raios[i], 
+            lugar=lugares[i], 
+            cor=cores[i],
+            velocidade=velocidades[i], 
+            nome=f'corpo{i}'
+            )
+
+def em_circulo(universo, ponto, quant, distancia_min, distancia_max, massa):
+    for i in range(quant):
+        x_possivel = [ponto[0] - distancia_max, ponto[0] + distancia_max]
+        y_possivel = [ponto[1] - distancia_max, ponto[1] + distancia_max]
+
+        local_x = randint(x_possivel[0], x_possivel[1])
+        local_y = randint(y_possivel[0], y_possivel[1])
+        lugar = [local_x, local_y]
+
+        dist = getD(ponto, lugar)
+
+        while dist < distancia_min:
+            local_x = randint(x_possivel[0], x_possivel[1])
+            local_y = randint(y_possivel[0], y_possivel[1])
+            lugar = [local_x, local_y]
+
+            dist = getD(ponto, lugar)
+        
+        v_x = 50000
+        v_y = 60000
+
+        dist_x = local_x - ponto[0]
+        dist_y = local_y - ponto[1]
+
+        velocidade = [
+            v_x*((distancia_max-dist_x)/distancia_max),
+            v_y*((distancia_max-dist_y)/distancia_max)
+            ]
+
+        corpo = universo.new_corpo(
+            massa=massa, 
+            raio=500, 
+            lugar=lugar, 
+            cor=(200, 200, 255),
+            velocidade=velocidade, 
+            nome='corpo'
+            )
+
+
 def manual(universo):
-    corpo1 = universo.new_corpo(
+    '''corpo1 = universo.new_corpo(
         massa=(6972 * (8**24)), 
         raio=12000, 
         lugar=[-250000, 0], 
@@ -45,28 +100,15 @@ def manual(universo):
         lugar=[150000, 550000],
         velocidade=[40000, -2000],
         cor=(250, 255, 255), 
-        nome='corpo3')
-    
-    corpo4 = universo.new_corpo(
-        massa=(355.972 * (7**24)), 
-        raio=5000, 
-        lugar=[200000, 500000],
-        velocidade=[25000, 0],
-        cor=(150, 155, 255), 
-        nome='corpo4')
+        nome='corpo3')'''
 
-    corpo7 = universo.new_corpo(
-        massa=(255.972 * (7**24)), 
-        raio=7000, 
-        lugar=[-100000, 200000],
-        velocidade=[-85000, 40000],
-        cor=(255, 190, 155), 
-        nome='corpo7')
-    
     terra = universo.new_corpo(
         massa=(2349 * (9**23)), 
-        raio=7000, 
-        lugar=[-300000, -600000],
-        velocidade=[-35000, 40000],
-        cor=(0, 0, 155), 
-        nome='Terra')
+        raio=10000, 
+        lugar=[0, 0],
+        velocidade=[0, 0],
+        cor=(50, 50, 255), 
+        nome='Terra'
+        )
+
+    em_circulo(universo, terra.lugar, 100, 400000, 500000, (455.972 * (7**24)))

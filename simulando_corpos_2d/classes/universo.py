@@ -22,7 +22,7 @@ class Universo:
 
                         corpo2.putForca(Fg[1], dt)
 
-                        if d < (corpo._raio+corpo2._raio)*2.5:
+                        if d < (corpo._raio+corpo2._raio)*1:
                             massa1, massa2 = corpo.getMassa(), corpo2.getMassa()
                             massas = (massa1+massa2)
 
@@ -40,11 +40,11 @@ class Universo:
                             if raio1 < raio2:
                                 raios=raio2
                             
-                            raios = (raio1 + raio2)*0.6
+                            #raios = (raio1 + raio2)*0.6
 
                             new_corpo = self.new_corpo(
                                 massa=massas, 
-                                raio=raios*1.2, 
+                                raio=raios, 
                                 lugar=lugar,
                                 velocidade=velocidade,
                                 cor=cor, 

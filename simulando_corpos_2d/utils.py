@@ -1,3 +1,5 @@
+
+
 def getLugarPixel(lugarKm, tamanhoTela, zoom):
     return [int(distanciaKmToPixel(lugarKm[0], tamanhoTela[0], zoom)+(tamanhoTela[0]*0.5)),
             int(distanciaKmToPixel(lugarKm[1], tamanhoTela[1], zoom)+(tamanhoTela[1]*0.5))]

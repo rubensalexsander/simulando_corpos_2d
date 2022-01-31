@@ -8,27 +8,17 @@ import faz_corpos
 mouse = ()
 universo1 = Universo()
 #criaCorpos(universo1)
-faz_corpos.aleatorios(
-    universo1, 
-    150, 
-    [[-5000000,-5000000], [5000000, 5000000]],
-    [-10000, -10000],
-    [10000, 10000],
-    2000,
-    7000,
-    (2000 * (8**23)),
-    (2000 * (8**24)))
-
+faz_corpos.manual(universo1)
 
 #Definições iniciais-------
-zoom = 15000000 #Zoom inicia
+zoom = 500000 #Zoom inicia
 centroTela = [0, 0] #Local de início ---
 corpo_seguir = 0
 seguir = False
 show_squadinfors = False
 show_rastro = False
 show_orientation = False
-pause = False
+pause = True
 iniciou = False
 
 def pausar():
@@ -42,19 +32,16 @@ def pausar():
         btPause.cor = app.cor_texto
         btPause.corTexto = app.cor_bt
     app.update()
-
 btPause.command = pausar
 
 def menosZoom():
     global zoom
     zoom += zoom * 0.25
-
 btMenosZoom.command = menosZoom
 
 def maisZoom():
     global zoom
     zoom -= zoom * 0.25
-
 btMaisZoom.command = maisZoom
 
 def change_rastro():
@@ -67,7 +54,6 @@ def change_rastro():
         show_rastro = True
         bt_rastro.cor = app.cor_texto
         bt_rastro.corTexto = app.cor_bt
-
 bt_rastro.command = change_rastro
 
 def change_infors():
@@ -81,7 +67,6 @@ def change_infors():
         show_squadinfors = True
         bt_infors.cor = app.cor_texto
         bt_infors.corTexto = app.cor_bt
-
 bt_infors.command = change_infors
 
 def change_orientation():
@@ -94,27 +79,22 @@ def change_orientation():
         show_orientation = True
         bt_orientation.cor = app.cor_texto
         bt_orientation.corTexto = app.cor_bt
-
 bt_orientation.command = change_orientation
 
 def centerUP():
     centroTela[1] -= zoom/10
-
 btCenterUP.command = centerUP
 
 def centerDOWN():
     centroTela[1] += zoom/10
-
 btCenterDOWN.command = centerDOWN
 
 def centerLEFT():
-        centroTela[0] -= zoom/10
-
+    centroTela[0] -= zoom/10
 btCenterLEFT.command = centerLEFT
 
 def centerRIGHT():
     centroTela[0] += zoom/10
-
 btCenterRIGHT.command = centerRIGHT
 
 #Loop de game
