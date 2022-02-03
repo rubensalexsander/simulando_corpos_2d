@@ -74,10 +74,7 @@ btCenterRIGHT = app.novoBotao(
     end_draw=True,
     refer='nr')
 
-txZoom = app.novoTexto(
-    tamanho=11,
-    lugar=[0.01, 30]
-)
+
 
 sqZoom = app.novoSquare(
     lugar=[0.99, 0.99],
@@ -140,6 +137,24 @@ bt_orientation = app.novoBotao(
     bordas=1
 )
 
+ltInfors = app.novoList(
+    lugar=[5, 30],
+    cor=(-1,-1,-1),
+    corTexto=app.cor_texto_bt,
+    draw_coluns=0,
+    tamanho=[165, 90],
+    tamanhoTexto=13,
+    tamanhoDistancias=[70,20],
+    padding=[5,5],
+    content={},
+    bordas=1
+)
+'''
+txZoom = app.novoTexto(
+    tamanho=11,
+    lugar=[0.01, 30]
+)
+
 tx_time = app.novoTexto(
     tamanho=11,
     lugar=[0.01, 50]
@@ -148,4 +163,4 @@ tx_time = app.novoTexto(
 tx_corpos = app.novoTexto(
     tamanho=11,
     lugar=[0.01, 70]
-)
+)'''

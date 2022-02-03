@@ -26,11 +26,9 @@ def get_px(vals, resolution):
 def has_colision(area1, area2):
     area1ponto1 = area1[0]
     area1ponto2 = [area1[1][0], area1[0][1]]
-    area1ponto3 = [area1[0][0], area1[1][1]]
     area1ponto4 = area1[1]
     area2ponto1 = area2[0]
     area2ponto2 = [area2[1][0], area2[0][1]]
-    area2ponto3 = [area2[0][0], area2[1][1]]
     area2ponto4 = area2[1]
     if (area2ponto1[0]>=area1ponto1[0]) and (area2ponto1[1]>=area1ponto1[1]) and (area2ponto1[0]<=area1ponto4[0]) and (area2ponto1[1]<=area1ponto4[1]):
         return True
@@ -41,19 +39,12 @@ def has_colision(area1, area2):
     elif (area2ponto2[0]>=area1ponto1[0]) and (area2ponto2[1]>=area1ponto1[1]) and (area2ponto2[0]<=area1ponto4[0]) and (area2ponto2[1]<=area1ponto4[1]):
         return True
 
-    return False
-
 def refer_adjust(lugar, tamanho, refer):
-    if refer == 'nl':
-        lugar_return = lugar
-    elif refer == 'nr':
-        lugar_return = [int(lugar[0]-tamanho[0]), int(lugar[1])]
-    elif refer == 'sl':
-        lugar_return = [int(lugar[0]), int(lugar[1]-tamanho[1])]
-    elif refer == 'sr':
-        lugar_return = [int(lugar[0]-tamanho[0]), int(lugar[1]-tamanho[1])]
-    elif refer == 'c':
-        lugar_return = [int(lugar[0]-(tamanho[0]/2)), int(lugar[1]-(tamanho[1]/2))]
+    if refer == 'nl': lugar_return = lugar
+    elif refer == 'nr': lugar_return = [int(lugar[0]-tamanho[0]), int(lugar[1])]
+    elif refer == 'sl': lugar_return = [int(lugar[0]), int(lugar[1]-tamanho[1])]
+    elif refer == 'sr': lugar_return = [int(lugar[0]-tamanho[0]), int(lugar[1]-tamanho[1])]
+    elif refer == 'c': lugar_return = [int(lugar[0]-(tamanho[0]/2)), int(lugar[1]-(tamanho[1]/2))]
     
     return lugar_return
 
@@ -110,10 +101,11 @@ class App:
         self.listMenus = []
         self.listTextos = []
         self.listSquares = []
+        self.listLists = []
 
         #Definições-------
         if self.FPS_rate == None:
-            self.FPS_rate = 30
+            self.FPS_rate = 60
             
         pygame.init()
         pygame.display.set_caption(nomeJanela)
@@ -127,7 +119,7 @@ class App:
         self.txFps = self.novoTexto(string='FPS: None', lugar=[0.01, 0.01])
         self.txFps.active = False
 
-        #Marca dagua ARTI
+        #Marca d'agua ARTI
         self.txARTI = self.novoTexto(string='powered by ARTI.Tecnology', lugar=[5, 0.975])
         self.txARTI.cor = self.cor_back_secundaria
         self.txARTI.active = True
@@ -142,8 +134,8 @@ class App:
         self.cor_bordas_bt = tema['cor_bordas_bt'],
         self.bt_radius = tema['bt_radius']
     
-    def novoSquare(self, lugar=[0,0], refer='nl', cor=None, tamanho=[0.05,0.05], active=True, command=None, radius=None, bordas=0, corBordas=None, end_draw=False):
-        
+    def novoSquare(self, lugar=[0,0], refer='nl', cor=None, tamanho=[0.05,0.05], active=True, command=None, 
+    radius=None, bordas=0, corBordas=None, end_draw=False):
         if not cor: cor = self.cor_bt
         if not radius: radius = self.bt_radius
 
@@ -151,8 +143,9 @@ class App:
         self.listSquares.append(square)
         return square
 
-    def novoBotao(self, lugar:list=[0,0], refer:str='nl', cor:tuple=None , tamanho:list=[0.1,0.055], active:bool=True, command=None, string:str='Novo botão', corTexto:tuple=None, tamanhoTexto:int=None, fonteTexto:str=None, radius:int=None, bordas:int=0, corBordas:tuple=None, end_draw:bool=False):
-
+    def novoBotao(self, lugar:list=[0,0], refer:str='nl', cor:tuple=None , tamanho:list=[0.1,0.055], 
+    active:bool=True, command=None, string:str='Novo botão', corTexto:tuple=None, tamanhoTexto:int=None, 
+    fonteTexto:str=None, radius:int=None, bordas:int=0, corBordas:tuple=None, end_draw:bool=False):
         if not cor: cor = self.cor_bt
         if not corTexto: corTexto = self.cor_texto_bt
         if not tamanhoTexto: tamanhoTexto = 15
@@ -169,14 +162,29 @@ class App:
         self.listMenus.append(menu)
         return menu
     
-    def novoTexto(self, lugar=[0,0], refer='nl', cor=None, tamanho=15, active=True, command=None, string="Novo texto", fonte=None, end_draw=False):
+    def novoTexto(self, lugar=[0,0], refer='nl', cor=None, tamanho=15, active=True, command=None, string="Novo texto", 
+    fonte=None, end_draw=False):
         if not cor: cor = self.cor_texto
         if not fonte: fonte = "ARIAL"
         texto = Texto(lugar, refer, cor, tamanho, active, command, string, fonte, end_draw)
         self.listTextos.append(texto)
         return texto
     
-    def drawSquare(self, cor:tuple=(255,255,255), lugar:list=[0,0], refer="nl", tamanho:list=[40,40], radius:int=0, bordas:int=0, corBordas:tuple=None, end_draw:bool=False):
+    def novoList(self, lugar=[0,0], refer='nl', cor=None, corTexto=None, tamanho=[0.05,0.05], tamanhoTexto=15, 
+    tamanhoDistancias=[20,30], padding=[1,1], active=True, command=None, radius=None, bordas=0, corBordas=None, 
+    content=[], draw_coluns=True, end_draw=False):
+        if not corTexto: corTexto = self.cor_texto
+        if not cor: cor = self.cor_bt
+        if not corTexto: corTexto = self.cor_texto_bt
+        if not tamanhoTexto: tamanhoTexto = 15
+        if not radius: radius = self.bt_radius
+        lista = List(lugar, refer, cor, corTexto, tamanho, tamanhoTexto, tamanhoDistancias, padding, active, command, radius, bordas, 
+        corBordas, content, draw_coluns, end_draw)
+        self.listLists.append(lista)
+        return lista
+    
+    def drawSquare(self, cor:tuple=(255,255,255), lugar:list=[0,0], refer="nl", tamanho:list=[40,40], radius:int=0, 
+    bordas:int=0, corBordas:tuple=None, end_draw:bool=False):
         pos = -1
         if end_draw: pos = 0
         if (not corBordas) and (bordas > 0):
@@ -185,18 +193,20 @@ class App:
         tamanho = get_px(tamanho, self.screen.get_size())
         lugar = get_px(lugar, self.screen.get_size())
         lugar = refer_adjust(lugar, tamanho, refer)
-        
 
         self.draws.insert(pos, ("square", cor, lugar, tamanho, radius, bordas, corBordas))
+
+        return lugar
     
     def drawText(self, string="New text", cor=(0,0,0), lugar=[0,0], refer="nl", tamanho=15, fonte="ARIAL", end_draw=False):
-
         tamanho_surface = get_size_surfice(string, fonte, tamanho)
 
         lugar = get_px(lugar, self.screen.get_size())
         lugar = refer_adjust(lugar, tamanho_surface, refer)
 
         self.draws.append(("text", string, cor, lugar, tamanho, fonte))
+
+        return lugar
     
     def drawCircle(self, cor=(255,255,255), lugar=[0,0], tamanho=10, end_draw=False):
         self.draws.append(("circle", cor, lugar, tamanho))
@@ -212,7 +222,6 @@ class App:
             
             elif event.type == pygame.MOUSEBUTTONUP:
                 self.mouse.lugar = pygame.mouse.get_pos()
-                
                 for botao in self.listBotoes:
                     if has_colision(botao.getArea(self.screen.get_size()), self.mouse.getArea(self.screen.get_size())):
                         try:
@@ -247,22 +256,36 @@ class App:
                 self.drawSquare(cor=botao.cor, lugar=botao.lugar, refer=botao.refer, tamanho=botao.tamanho, radius=botao.radius, bordas=botao.bordas, corBordas=botao.corBordas, end_draw=botao.end_draw)
                 self.drawText(botao.string, cor=botao.corTexto, lugar=lugar_texto, tamanho=botao.tamanhoTexto, fonte=botao.fonteTexto, refer='c')
         
-        for menu in self.listMenus:
-            if menu.active:
-                if menu.aberto:
-                    self.drawSquare(menu.cor, menu.lugar, menu.tamanho, bordas=1)
-        
+        #Adiciona lists à lista de escrita
+        for lista in self.listLists:
+            if lista.active:
+                lugar_square = self.drawSquare(lista.cor, lista.lugar, lista.refer, lista.tamanho, lista.radius, lista.bordas, lista.corBordas)
+                content = list(lista.content.items())
+                for i in range(len(content)):
+                    tx_lugar = [lugar_square[0]+(i*lista.tamanhoDistancias[0])+lista.padding[0], lugar_square[1]+lista.padding[1]]
+                    column = content[i][0]
+                    itens = content[i][1]
+                    
+                    self.drawText(string=column, cor=lista.corTexto, lugar=tx_lugar, tamanho=lista.tamanhoTexto)
+
+                    if lista.draw_coluns:
+                        #Desenha linha horizontal
+                        ln_lugar = [lugar_square[0]+lista.padding[0], lugar_square[1]+lista.padding[1]+(lista.tamanhoDistancias[1]) - 1]                
+                        ponto1 = ln_lugar
+                        ponto2 = [ponto1[0]+lista.tamanhoDistancias[0]-(2*lista.padding[0]), ponto1[1]]
+                        self.drawLine(ponto1, ponto2, cor=(255,255,255))
+                    
+                    for y in range(len(itens)):
+                        tx_lugar = [lugar_square[0]+(i*lista.tamanhoDistancias[0])+lista.padding[0], lugar_square[1]+(lista.tamanhoDistancias[1]*(y+1))+lista.padding[1]]
+                        self.drawText(string=itens[y], cor=lista.corTexto, lugar=tx_lugar, tamanho=lista.tamanhoTexto)
+
         #Adiciona textos à lista de escrita
         for texto in self.listTextos:
             if texto.active:
-                
                 self.drawText(texto.string, texto.cor, texto.lugar, texto.refer, texto.tamanho, texto.fonte)
         
         #Outros updates
         self.txFps.string = f'FPS: {self.FPS}'
-        
-        if self.FPS:
-            pass
         
         #Desenha formas na tela:
         if not pause:
@@ -348,7 +371,8 @@ class Square(object):
         ]
 
 class Botao(Square):
-    def __init__(self, lugar, refer, cor, tamanho, active, command, string, corTexto, tamanhoTexto, fonteTexto, radius, bordas, corBordas, end_draw):
+    def __init__(self, lugar, refer, cor, tamanho, active, command, string, corTexto, tamanhoTexto, fonteTexto, 
+    radius, bordas, corBordas, end_draw):
         super().__init__(lugar, refer, cor, tamanho, active, command, radius, bordas, corBordas, end_draw)
         self.string = string
         self.corTexto = corTexto
@@ -363,9 +387,19 @@ class Menu(Square):
 class Texto(object):
     def __init__(self, lugar, refer, cor, tamanho, active, command, string, fonte, end_draw):
         super().__init__(lugar, refer, cor, tamanho, active, command, end_draw)
-
         self.string = string
         self.fonte = fonte
+
+class List(Square):
+    def __init__(self, lugar, refer, cor, corTexto, tamanho, tamanhoTexto, tamanhoDistancias, padding, active, command, radius, 
+    bordas, corBordas, content, draw_coluns, end_draw):
+        super().__init__(lugar, refer, cor, tamanho, active, command, radius, bordas, corBordas, end_draw)
+        self.content = content
+        self.corTexto = corTexto
+        self.tamanhoTexto = tamanhoTexto
+        self.tamanhoDistancias = tamanhoDistancias
+        self.padding = padding
+        self.draw_coluns = draw_coluns
 
 class Mouse(Square):
     def __init__(self, areaDeclique=[2, 2], refer='nl'):
@@ -373,41 +407,40 @@ class Mouse(Square):
         self.refer = refer
 
 if __name__ == '__main__':
-    arApp = App(tema=hackingBlack)
+    arApp = App(tema=tema_padrao)
 
     arApp.txFps.active = True
 
     def funcaoBotao():
-        print('AAAAAAAAA')
+        print('Botão clicado.')
 
-    bt1 = arApp.novoBotao()
-    bt1.tamanho = [0.3, 0.2]
-    bt1.lugar = [0.5, 0.5]
-    bt1.command = funcaoBotao
-    bt1.refer = 'c'
-    bt1.radius = 6
-    #bt1.bordas = 1
-    #bt1.cor = (-1, -1, -1)
-    #bt1.cor = (arApp.corTextoSecundaria)
-    #bt1.tamanho = [80,45]
-
+    bt1 = arApp.novoBotao(
+        tamanho = [0.3, 0.2],
+        lugar = [0.5, 0.5],
+        command = funcaoBotao,
+        refer = 'c',
+        radius = 6
+    )
+    
     def sair():
         return 'finish'
 
-    btSair = arApp.novoBotao()
-    btSair.string = 'x'
-    btSair.lugar = [0.99, 0.01]
-    btSair.tamanho = [40, 40]
-    btSair.corTexto = (255,0,0)
-    btSair.tamanhoTexto = 30
-    btSair.refer = 'nr'
-    btSair.bordas = 1
-    btSair.corBordas = (255,0,0)
-    btSair.command = sair
-
-    txMouse = arApp.novoTexto()
-    txMouse.lugar = [0.5, 0.65]
-    txMouse.refer = 'c'
+    btSair = arApp.novoBotao(
+        lugar = [0.99, 0.01],
+        refer = 'nr',
+        tamanho = [40, 40],
+        command = sair,
+        string = 'x',
+        corTexto = (255,0,0),
+        tamanhoTexto = 30,
+        bordas = 1,
+        corBordas = (255,0,0)
+    )
+    
+    txMouse = arApp.novoTexto(
+        lugar = [0.5, 0.65],
+        refer = 'c'
+    )
 
     sq1 = arApp.novoSquare(
         lugar=[0.25, 0.25],
@@ -415,13 +448,30 @@ if __name__ == '__main__':
     )
     sq1.active = False
 
+    tx_arFront = arApp.novoTexto(
+        [0.5, 0.1],
+        cor=(155,155,155),
+        refer='c',
+        tamanho=60,
+        string='arFront'
+    )
+
+    lista_teste = arApp.novoList(
+        lugar=[300,100],
+        tamanho=[250, 120],
+        padding=[5, 5],
+        cor=(-1,0,0),
+        content={
+            'Nomes':('pessoa1', 'pessoa2', 'pessoa3', 'pessoa4'),
+            'Idades':('15', '16')
+        },
+        draw_coluns=False,
+        tamanhoTexto=15,
+        tamanhoDistancias=[100, 15],
+    )
+
     running = True
     while running:
-
-        #arApp.drawSquare(lugar=[20, 500])
-        #arApp.drawCircle(lugar=[100,300], cor=(0,0,0))
-        #arApp.drawLine(ponto1=[100,100], ponto2=[350,350], cor=(0,255,0))
-
         txMouse.string = str(pygame.mouse.get_pos())
         
         saida = arApp.update()

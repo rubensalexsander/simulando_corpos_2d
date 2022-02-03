@@ -11,7 +11,7 @@ universo1 = Universo()
 faz_corpos.manual(universo1)
 
 #Definições iniciais-------
-zoom = 500000 #Zoom inicia
+zoom = 1000000 #Zoom inicia
 centroTela = [0, 0] #Local de início ---
 corpo_seguir = 0
 seguir = False
@@ -106,13 +106,17 @@ while running:
             iniciou = True
             time_inicio = time()
         universo1.update((1 / app.FPS), show_rastro, pause)
-        tx_time.string = f'Tempo: {round(time()-time_inicio, 1)}s'
+        #tx_time.string = f'Tempo: {round(time()-time_inicio, 1)}s'
+        ltInfors.content = {
+            'Infor':('Zomm: ', 'N corpos: ', 'Tempo: '),
+            'Val':(getStringdist(zoom), str(len(universo1.corpos)), str(round(time()-time_inicio, 1)))
+        }
     
     if seguir:
         centroTela = universo1.corpos[corpo_seguir].lugar[:]
     
-    txZoom.string = 'Zoom: ' + getStringdist(zoom)
-    tx_corpos.string = 'N corpos: ' + str(len(universo1.corpos))
+    #txZoom.string = 'Zoom: ' + getStringdist(zoom)
+    #tx_corpos.string = 'N corpos: ' + str(len(universo1.corpos))
     
     # Escreve corpos
     for corpo in universo1.corpos:

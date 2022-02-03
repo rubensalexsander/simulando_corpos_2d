@@ -78,16 +78,16 @@ def em_circulo(universo, ponto, quant, distancia_min, distancia_max, massa):
 
 
 def manual(universo):
-    '''corpo1 = universo.new_corpo(
-        massa=(6972 * (8**24)), 
-        raio=12000, 
-        lugar=[-250000, 0], 
+    corpo1 = universo.new_corpo(
+        massa=(6972 * (8**23)), 
+        raio=5000, 
+        lugar=[-450000, -150000], 
         cor=(100, 150, 255),
-        velocidade=[10000, 0], 
+        velocidade=[10000, 60000], 
         nome='corpo1')
     
     corpo2 = universo.new_corpo(
-        massa=(555.972 * (7**24)), 
+        massa=(555.972 * (7**23)), 
         raio=4000, 
         lugar=[300000, 300000],
         velocidade=[-45000, 12000],
@@ -95,12 +95,12 @@ def manual(universo):
         nome='corpo2')
     
     corpo3 = universo.new_corpo(
-        massa=(455.972 * (7**24)), 
+        massa=(455.972 * (7**23)), 
         raio=5000, 
         lugar=[150000, 550000],
         velocidade=[40000, -2000],
         cor=(250, 255, 255), 
-        nome='corpo3')'''
+        nome='corpo3')
 
     terra = universo.new_corpo(
         massa=(2349 * (9**23)), 
@@ -111,4 +111,4 @@ def manual(universo):
         nome='Terra'
         )
 
-    em_circulo(universo, terra.lugar, 100, 400000, 500000, (455.972 * (7**24)))
+    #em_circulo(universo, terra.lugar, 100, 400000, 500000, (455.972 * (7**24)))
