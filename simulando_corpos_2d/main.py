@@ -100,7 +100,6 @@ btCenterRIGHT.command = centerRIGHT
 #Loop de game
 running = True
 while running:
-
     if app.FPS:
         if not iniciou:
             iniciou = True
@@ -108,8 +107,10 @@ while running:
         universo1.update((1 / app.FPS), show_rastro, pause)
         #tx_time.string = f'Tempo: {round(time()-time_inicio, 1)}s'
         ltInfors.content = {
-            'Infor':('Zomm: ', 'N corpos: ', 'Tempo: '),
-            'Val':(getStringdist(zoom), str(len(universo1.corpos)), str(round(time()-time_inicio, 1)))
+            '- Informação':('Zoom: ', 'N corpos: ', 'Tempo: ', 'Centro tela X: ', 'Centro tela Y: '),
+            '- Valor':(
+                getStringdist(zoom), str(len(universo1.corpos)), str(round(time()-time_inicio, 1)), 
+                str(round(centroTela[0], 1)), str(round(centroTela[1], 1))),
         }
     
     if seguir:
@@ -125,18 +126,6 @@ while running:
         tamanhoCorpoPixel = distanciaKmToPixel(tamanho_corpo, app.resolucao[0], zoom)
         lugarCorpoPixel = getLugarPixel([lugar_corpo[0]-centroTela[0], lugar_corpo[1]-centroTela[1]], app.resolucao, zoom)
     
-        if tamanhoCorpoPixel:
-            app.drawCircle(corpo.getCor(), lugarCorpoPixel, tamanhoCorpoPixel)
-        else:
-            app.drawLine(lugarCorpoPixel, lugarCorpoPixel, corpo.getCor(), 1)
-
-        if show_rastro:
-            for trass in corpo.trail.trass:
-                tamanho_screen = app.screen.get_size()
-                ponto1 = getLugarPixel([trass['pt1'][0]-centroTela[0], trass['pt1'][1]-centroTela[1]], app.resolucao, zoom)
-                ponto2 = getLugarPixel([trass['pt2'][0]-centroTela[0], trass['pt2'][1]-centroTela[1]], app.resolucao, zoom)
-                app.drawLine(ponto1, ponto2, trass['color'], trass['thickness'])
-
         if show_orientation:
             vel_corpo = corpo.getVelocidade()[:]
             total_vel = abs(vel_corpo[0]) + abs(vel_corpo[1]) + 1
@@ -144,6 +133,13 @@ while running:
             seta_x = vel_corpo[0]/total_vel
             seta_y = vel_corpo[1]/total_vel
             app.drawLine(lugarCorpoPixel, [lugarCorpoPixel[0]+(seta_x*tamanho_seta), lugarCorpoPixel[1]+(seta_y*tamanho_seta)])
+
+        if show_rastro:
+            for trass in corpo.trail.trass:
+                tamanho_screen = app.screen.get_size()
+                ponto1 = getLugarPixel([trass['pt1'][0]-centroTela[0], trass['pt1'][1]-centroTela[1]], app.resolucao, zoom)
+                ponto2 = getLugarPixel([trass['pt2'][0]-centroTela[0], trass['pt2'][1]-centroTela[1]], app.resolucao, zoom)
+                app.drawLine(ponto1, ponto2, trass['color'], trass['thickness'])
 
         if show_squadinfors:
             #Escrve squadInfors
@@ -162,6 +158,11 @@ while running:
                 cor=(0,255,0),
                 tamanho=10
             )
+        
+        if tamanhoCorpoPixel:
+            app.drawCircle(corpo.getCor(), lugarCorpoPixel, tamanhoCorpoPixel)
+        else:
+            app.drawLine(lugarCorpoPixel, lugarCorpoPixel, corpo.getCor(), 1)
     
     saida = app.update()
     
